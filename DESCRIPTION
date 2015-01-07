@@ -1,0 +1,13 @@
+Package: effsize
+Type: Package
+Title: Efficient effect size computation
+Version: 0.5.2
+Date: 2014-08-26
+Author: Marco Torchiano
+Maintainer: Marco Torchiano <marco.torchiano@polito.it>
+Description: This package contains the functions to compute the standardized 
+  effect sizes for experiments (Cohen d, Hedges g, Cliff delta, Vargha and Delaney A). 
+  The computation algorithms have been optimized to allow efficient computation even 
+  with very large data sets.
+URL:http://softeng.polito.it/software/effsize/
+License: GPL-2

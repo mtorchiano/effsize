@@ -1,0 +1,117 @@
+\name{cohen.d}
+\alias{cohen.d}
+\alias{cohen.d.default}
+\alias{cohen.d.formula}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Cohen's d and Hedges g effect size
+}
+\description{
+Computes the Cohen's d and Hedges'g effect size statistics.
+}
+\usage{
+
+cohen.d(d, ...)
+
+\method{cohen.d}{formula}(formula,data=list(),...)
+
+\method{cohen.d}{default}(d,f,pooled=TRUE,paired=FALSE,
+                   na.rm=FALSE, hedges.correction=FALSE,
+                   conf.level=0.95, ...)
+
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{d}{
+a numeric vector giving either the data values (if \code{f} is a factor) or the treatment group values (if \code{f} is a numeric vector)
+}
+  \item{f}{
+either a factor with two levels or a numeric vector of values
+}
+  \item{pooled}{
+a logical indicating whether compute pooled standard deviation or the whole sample standard deviation
+}
+  \item{paired}{\bold{deprecated}
+a logical indicating whether to consider the values as paired 
+\emph{Since version 0.3.1 this parameter is ignored and may be removed in future code clean-ups}
+}
+  \item{na.rm}{
+logical indicating whether \code{NA} should be removed before computation
+}
+  \item{hedges.correction}{
+logical indicating whether apply the Hedges correction
+}
+  \item{conf.level}{
+confidence level of the confidence interval
+}
+  \item{formula}{
+    a formula of the form \code{y ~ f}, where \code{y} is a numeric variable giving the data values and \code{f} a factor with two levels giving the corresponding groups
+  }
+  \item{data}{
+  an optional matrix or data frame containing the variables in the formula \code{formula}. By default the variables are taken from \code{environment(formula)}.
+  }
+  \item{...}{
+  further arguments to be passed to or from methods.
+  }
+}
+\details{
+The function computes the value of Cohen's d statistics (Cohen 1988).
+If required (\code{hedges.correction==TRUE}) the Hedges g statistics is computed instead (Hedges and Holkin, 1985).
+
+Also a quantification of the effect size magnitude is performed using the thresholds define in Cohen (1992).
+The magnitude is assessed using the thresholds provided in (Cohen 1992), i.e. |d|<0.2 \code{"negligible"}, |d|<0.5 \code{"small"}, |d|<0.8 \code{"medium"}, otherwise \code{"large"}
+
+The variace of the \code{d} is computed using the conversion formula reportead at page 238 of Cooper et al. (2009):
+
+\deqn{ S^2_d = \left( \frac{n_1+n_2}{n_1 n_2} + \frac{d^2}{2 df}\right) \left( \frac{n_1+n_2}{df} \right)}{((n1+n2)/(n1*n2) + .5*d^2/df) * ((n1+n2)/df)}
+}
+\value{
+A list of class \code{effsize} containing the following components:
+\item{estimate}{the statistics estimate}
+\item{conf.int}{the confidence interval of the statistic}
+\item{var}{the estimated variance of the statistic}
+\item{conf.level}{the confidence level used to compute the confidence interval}
+\item{magnitude}{a qualitative assessment of the magnitude of effect size}
+\item{method}{the method used for computing the effect size, either \code{"Cohen's d"} or \code{"Hedges' g"}}
+}
+\references{
+Cohen, J. (1988). 
+Statistical power analysis for the behavioral sciences (2nd ed.). 
+New York:Academic Press.
+
+Hedges, L. V. & Olkin, I. (1985). Statistical methods for meta-analysis. Orlando, FL: Academic Press.
+
+Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159.
+
+The Handbook of Research Synthesis and Meta-Analysis (Cooper, Hedges, & Valentine, 2009)
+}
+\author{
+Marco Torchiano \url{http://softeng.polito.it/torchiano/}
+}
+%\note{
+%%
+%}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+\code{\link{cliff.delta}}, \code{\link{VD.A}}, \code{\link{print.effsize}}
+}
+\examples{
+treatment = rnorm(100,mean=10)
+control = rnorm(100,mean=12)
+d = (c(treatment,control))
+f = rep(c("Treatment","Control"),each=100)
+## compute Cohen's d
+## treatment and control
+cohen.d(treatment,control)
+## data and factor
+cohen.d(d,f)
+## formula interface
+cohen.d(d ~ f)
+## compute Hedges' g
+cohen.d(d,f,hedges.correction=TRUE)
+}
+\keyword{ effect size }
+\keyword{Hedges}
+\keyword{Cohen}% __ONLY ONE__ keyword per line
