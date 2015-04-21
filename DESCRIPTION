@@ -9,9 +9,8 @@ Description: A colleciton of functions to compute the standardized
   effect sizes for experiments (Cohen d, Hedges g, Cliff delta, Vargha-Delaney A). 
   The computation algorithms have been optimized to allow efficient computation even 
   with very large data sets.
-URL: http://softeng.polito.it/software/effsize/
+URL: http://github.com/mtorchiano/effsize/
+BugReports: https://github.com/mtorchiano/effsize/issues
 License: GPL-2
-Packaged: 2015-04-21 19:51:00 UTC; mtk
 NeedsCompilation: no
 Repository: CRAN
-BugReports: https://github.com/mtorchiano/effsize/issues

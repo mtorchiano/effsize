@@ -11,16 +11,7 @@ This packages contains functions to compute effect sizes both based on means dif
 The computation (especially for Cliff's Delta) is carried on with higly efficient algorithms.
 }
 \details{
-\tabular{ll}{
-Package: \tab effsize\cr
-Type: \tab Package\cr
-Version: \tab 0.5.4\cr
-Date: \tab 2015-04-21\cr
-License: \tab GPL-2\cr
-URL:  \tab \url{http://github.com/mtorchiano/effsize/} \cr
-  \tab \url{https://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.tar.gz} \cr
-  \tab  \url{https://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.pdf}
-}
+
 The main functions are:
 
 \code{\link{cliff.delta}}.
@@ -28,12 +19,6 @@ The main functions are:
 \code{\link{cohen.d}}.
 
 \code{\link{VD.A}}.
-
-
-\bold{Issues}
-
-Please report issues and bugs on the github repository 
-\url{https://github.com/mtorchiano/effsize/issues}.
 
 
 \bold{Change history}
