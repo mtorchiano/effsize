@@ -18,8 +18,8 @@ Version: \tab 0.5.4\cr
 Date: \tab 2015-04-21\cr
 License: \tab GPL-2\cr
 URL:  \tab \url{http://github.com/mtorchiano/effsize/} \cr
-  \tab \url{http://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.tar.gz} \cr
-  \tab  \url{http://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.pdf}
+  \tab \url{https://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.tar.gz} \cr
+  \tab  \url{https://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.pdf}
 }
 The main functions are:
 
