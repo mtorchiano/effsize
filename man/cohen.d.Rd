@@ -55,6 +55,10 @@ confidence level of the confidence interval
   }
 }
 \details{
+When \code{f} in the default version is a factor or a character, it must have two values and it identifies the two groups to be compared. Otherwise (e.g. \code{f} is numeric), it is considered as a sample to be compare to \code{d}.
+
+In the formula version, if \code{f} is expected to be a factor, if that is not the case it is coherced to a factor and a warning is issued.
+
 The function computes the value of Cohen's d statistics (Cohen 1988).
 If required (\code{hedges.correction==TRUE}) the Hedges g statistics is computed instead (Hedges and Holkin, 1985).
 

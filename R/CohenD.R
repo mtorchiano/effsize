@@ -101,11 +101,15 @@ cohen.d.formula= function(formula, data=list(), ...){
   }
   d <- mf[[1]]
   f <- mf[[2]]
+  if( ! any(c("character","factor") %in% class(f)) ){
+    warning("Cohercing rhs of formula to factor")
+    f = factor(f)
+  }  
   res = cohen.d.default(d,f,...)
   return(res)
 }
 
-
+# set.seed(52)
 # x = rnorm(100,mean=10)
 # y = rnorm(100,mean=12)
 # d = (c(x,y))
@@ -114,3 +118,11 @@ cohen.d.formula= function(formula, data=list(), ...){
 # print(eff.d)
 # eff.g = cohen.d(d,f,hedges.correction=TRUE)
 # print(eff.g)
+# set.seed(12345)
+# d <- rnorm(200)
+# f <- rep(c(1,2),400)
+# cohen.d(d ~ factor(f))
+
+
+
+

@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^spikes
+^paper
+^vignettes_draft
+^Performance
+^README.md$
+^.git\.*$
+^LICENSE$

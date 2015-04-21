@@ -53,7 +53,7 @@ shapiro.test(time.trunc)
 
 par(mar=c(3,3,.2,.1))
 boxplot(list("%/%"=time.div,"as.integer"=time.asint,"trunc"=time.trunc),
-         ylim=c(0,0.12),log="y")
+        ylim=c(0,0.12),log="y")
 boxplot(list("%/%"=time.div,"as.integer"=time.asint,"trunc"=time.trunc))
 
 wilcox.test(time.div,time.trunk)
@@ -79,29 +79,3 @@ showFunction <- function(f){
 cl = showFunction(partition)
 cl = showFunction(showFunction)
 cl = ff(x)
-
-##########  TEST ###################
-
-test_cliff.delta <- function(){
-  treatment = c(10,10,20,20,20,30,30,30,40,50)
-  control = c(10,20,30,40,40,50)
-  
-  res = cliff.delta(treatment,control,use.unbiased=F,use.normal=T)
-  
-  print(res)
-#Cliff's Delta
-#
-#delta estimate: -0.25 (small)
-#95 percent confidence interval:
-#  inf        sup 
-#-0.7265846  0.3890062 
-
-  x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)
-  x2 = c(10, 20, 30, 40, 40, 50)
-
-  print(cliff.delta(x1, x2))
-  print(cliff.delta(x1, x2, return.dm = TRUE))
-
-}
-
-

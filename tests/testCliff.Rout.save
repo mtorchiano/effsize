@@ -1,0 +1,88 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> ##########  TEST ###################
+> 
+> library(effsize)
+> 
+> assert <- function(label,condition){
++   cat(label,": ")
++   if(!condition){
++     cat("Failed!\n")
++   }else{
++     cat("OK.\n")
++   }
++ }
+> 
+> test_cliff.delta <- function(){
++   treatment = c(10,10,20,20,20,30,30,30,40,50)
++   control = c(10,20,30,40,40,50)
++   
++   res = cliff.delta(treatment,control,use.unbiased=F,use.normal=T)
++   
++   print(res)
++   
++ #Cliff's Delta
++ #
++ #delta estimate: -0.25 (small)
++ #95 percent confidence interval:
++ #  inf        sup 
++ #-0.7265846  0.3890062 
++   assert("small difference", res$magnitude=="small"  )
++ 
++ 
++   x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)
++   x2 = c(10, 20, 30, 40, 40, 50)
++ 
++ 
++   print(res<-cliff.delta(x1, x2))
++   assert("Negligible difference", res$magnitude=="negligible"  )
++ 
++   print(res <- cliff.delta(x1, x2, return.dm = TRUE))
++   assert("Dominance matrix ", any(grepl("dm",names(res)))  )
++ }
+> 
+> test_cliff.delta();
+
+Cliff's Delta
+
+delta estimate: -0.25 (small)
+95 percent confidence interval:
+       inf        sup 
+-0.7125351  0.3639999 
+small difference : OK.
+
+Cliff's Delta
+
+delta estimate: -0.06666667 (negligible)
+95 percent confidence interval:
+       inf        sup 
+-0.6082254  0.5172431 
+Negligible difference : OK.
+
+Cliff's Delta
+
+delta estimate: -0.06666667 (negligible)
+95 percent confidence interval:
+       inf        sup 
+-0.6082254  0.5172431 
+Dominance matrix  : OK.
+> 
+> proc.time()
+   user  system elapsed 
+  0.145   0.020   0.157 

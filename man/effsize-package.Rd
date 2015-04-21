@@ -14,12 +14,12 @@ The computation (especially for Cliff's Delta) is carried on with higly efficien
 \tabular{ll}{
 Package: \tab effsize\cr
 Type: \tab Package\cr
-Version: \tab 0.5.2\cr
-Date: \tab 2014-08-26\cr
+Version: \tab 0.5.3\cr
+Date: \tab 2015-04-20\cr
 License: \tab GPL-2\cr
 URL:  \tab \url{http://softeng.polito.it/software/effsize/} \cr
-      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.2.pdf} \cr
-      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.2.tar.gz}
+      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.3.pdf} \cr
+      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.3.tar.gz}
 }
 The main functions are:
 
@@ -28,6 +28,12 @@ The main functions are:
 \code{\link{cohen.d}}.
 
 \code{\link{VD.A}}.
+
+
+\bold{Issues}
+
+Please report issues and bugs on the github repository 
+\url{https://github.com/mtorchiano/effsize/issues}.
 
 
 \bold{Change history}
@@ -39,6 +45,7 @@ The main functions are:
 \item{0.5}{Added Vargha and Delaney A and fixed minor bugs with Cohen.d.}
 \item{0.5.1}{Modified the Vargha and Delaney A computation to minimize accuracy errors.}
 \item{0.5.2}{Fixed bug in cliff.delta.}
+\item{0.5.3}{Fixed bug in cohen.d.formula.}
 }
 }
 \author{
