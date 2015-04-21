@@ -5,7 +5,7 @@ Version: 0.5.4
 Date: 2015-04-21
 Authors@R: c(person("Marco", "Torchiano", role = c("aut", "cre"),
                               email="marco.torchiano@polito.it"))
-Description: A colleciton of functions to compute the standardized 
+Description: A collection of functions to compute the standardized 
   effect sizes for experiments (Cohen d, Hedges g, Cliff delta, Vargha-Delaney A). 
   The computation algorithms have been optimized to allow efficient computation even 
   with very large data sets.
