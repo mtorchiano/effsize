@@ -3,10 +3,10 @@
 \alias{effsize}
 \docType{package}
 \title{
-Effect size computation
+Efficient Effect Size Computation
 }
 \description{
-This packages contains functions to compute effect sizes both based on means difference (Cohen's d and Hedges g), dominance matrices (Cliff's Delta) and stochastic superiority (Vargha and Delaney A).
+This packages contains functions to compute effect sizes both based on means difference (Cohen's d and Hedges g), dominance matrices (Cliff's Delta) and stochastic superiority (Vargha-Delaney A).
 
 The computation (especially for Cliff's Delta) is carried on with higly efficient algorithms.
 }
@@ -14,12 +14,12 @@ The computation (especially for Cliff's Delta) is carried on with higly efficien
 \tabular{ll}{
 Package: \tab effsize\cr
 Type: \tab Package\cr
-Version: \tab 0.5.3\cr
-Date: \tab 2015-04-20\cr
+Version: \tab 0.5.4\cr
+Date: \tab 2015-04-21\cr
 License: \tab GPL-2\cr
-URL:  \tab \url{http://softeng.polito.it/software/effsize/} \cr
-      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.3.pdf} \cr
-      \tab    \url{http://softeng.polito.it/software/effsize/effsize_0.5.3.tar.gz}
+URL:  \tab \url{http://github.com/mtorchiano/effsize/} \cr
+  \tab \url{http://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.tar.gz} \cr
+  \tab  \url{http://github.com/mtorchiano/effsize/releases/download/v0.5.4/effsize_0.5.4.pdf}
 }
 The main functions are:
 
@@ -46,6 +46,7 @@ Please report issues and bugs on the github repository
 \item{0.5.1}{Modified the Vargha and Delaney A computation to minimize accuracy errors.}
 \item{0.5.2}{Fixed bug in cliff.delta.}
 \item{0.5.3}{Fixed bug in cohen.d.formula.}
+\item{0.5.4}{Fixed minor issue detected by check.}
 }
 }
 \author{

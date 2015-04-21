@@ -2,7 +2,7 @@
 # A. Vargha and H. D. Delaney. 
 # A critique and improvement of the CL common language 
 # effect size statistics of McGraw and Wong. 
-# Journal of Educational and Behavioral Statistics, 25(2):101–132, 2000
+# Journal of Educational and Behavioral Statistics, 25(2):101-132, 2000
 #
 # The formula to compute A has been transformed to minimize accuracy errors
 # See: http://mtorchiano.wordpress.com/2014/05/19/effect-size-of-r-precision/

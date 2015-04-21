@@ -1,1 +1,8 @@
 exportPattern("^[[:alpha:]]+")
+S3method(cliff.delta, formula)
+S3method(cliff.delta, default)
+S3method(cohen.d, default)
+S3method(cohen.d, formula)
+S3method(VD.A, default)
+S3method(VD.A, formula)
+S3method(print, effsize)

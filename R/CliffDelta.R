@@ -1,14 +1,14 @@
 ## Data from:
 ##     M.Hess, J.Kromrey. 
 ##     Robust Confidence Intervals for Effect Sizes: 
-##     A Comparative Study of Cohen’s d and Cliff’s Delta Under Non-normality and Heterogeneous Variances
-##     American Educational Research Association, San Diego, April 12 – 16, 2004
+##     A Comparative Study of Cohen's d and Cliff's Delta Under Non-normality and Heterogeneous Variances
+##     American Educational Research Association, San Diego, April 12 - 16, 2004
 ##
 ## Available at: http://www.coedu.usf.edu/main/departments/me/documents/cohen.pdf
 ##
 ## Kristine Y. Hogarty and Jeffrey D. Kromrey
-## Using SAS to Calculate Tests of Cliff’s Delta
-## Proceedings of the Twenty-Fourth Annual SAS® Users Group ￼International Conferenc, Miami Beach, Florida, 1999
+## Using SAS to Calculate Tests of Cliff's Delta
+## Proceedings of the Twenty-Fourth Annual SAS(R) Users Group International Conference, Miami Beach, Florida, 1999
 ## Availabel at: http://www2.sas.com/proceedings/sugi24/Posters/p238-24.pdf
 
 .bsearch.partition <- function(x, a, b=1, e=length(a) ){
