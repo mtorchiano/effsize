@@ -10,3 +10,7 @@ vignettes_draft/*
 Performance*.*
 
 .Rproj.user
+
+.RData
+
+.Rhistory

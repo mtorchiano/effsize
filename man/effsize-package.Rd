@@ -32,6 +32,7 @@ The main functions are:
 \item{0.5.2}{Fixed bug in cliff.delta.}
 \item{0.5.3}{Fixed bug in cohen.d.formula.}
 \item{0.5.4}{Fixed minor issue detected by check.}
+\item{0.5.5}{Changed the effsize field magnitude to a factor value.}
 }
 }
 \author{

@@ -50,7 +50,7 @@ VD.A.default <- function(d,f,...){
   res = list(
     method = "Vargha and Delaney A",
     name = "A",
-    magnitude = magnitude[findInterval(abs(scaled.A),levels)+1],
+    magniture = factor(magnitude[findInterval(abs(scaled.A),levels)+1],levels = magnitude,ordered=T),
     estimate = A
   )
   class(res) <- "effsize"

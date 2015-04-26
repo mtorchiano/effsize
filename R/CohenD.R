@@ -86,7 +86,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   res$conf.int = conf.int
   res$var = S_d
   res$conf.level = conf.level
-  res$magnitude = magnitude[findInterval(abs(d),levels)+1]
+  res$magnitude = factor(magnitude[findInterval(abs(d),levels)+1],levels = magnitude,ordered=T)
 #      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
 #      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
 

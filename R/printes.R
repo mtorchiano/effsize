@@ -10,7 +10,7 @@ print.effsize <- function(x, ...){
   cat(" estimate: ")
   cat(x$estimate)
   cat(" (")
-  cat(x$magnitude)
+  cat(as.character(x$magnitude))
   cat(")\n")
   if("conf.level" %in% names(x)){
     conf = x$conf.level*100

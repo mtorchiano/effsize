@@ -150,7 +150,7 @@ res=
   conf.int = conf.int,
   var = S_d,
   conf.level = conf.level,
-  magnitude = magnitude[findInterval(abs(d),levels)+1],
+  magnitude = factor(magnitude[findInterval(abs(d),levels)+1],levels = magnitude,ordered=T),
   method = "Cliff's Delta",
   algorithm = algorithm,
   variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
