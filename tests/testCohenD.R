@@ -32,3 +32,27 @@ assertWarning( eff.d <<- cohen.d(d ~ f) )
 
 assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
 
+## noncentrality t
+
+delta = c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56) - 1
+set.seed(50)
+a = delta
+set.seed(50)
+b = delta + runif(10)
+
+eff.d = cohen.d(a,b,paired=TRUE)
+assert("Paired measures",abs(eff.d$estimate)-1.42 <0.01 )
+
+# eff.dc = cohen.d(a,b,paired=TRUE,noncentral = TRUE)
+# assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
+# 
+# 
+# set.seed(22)
+# a = rnorm(35,24,sqrt(148.87))
+# mean(a)
+# set.seed(31)
+# b = rnorm(29,16.5,sqrt(139.16))
+# mean(b)
+# cohen.d(a,b,noncentral = TRUE)
+# cohen.d(a,b)
+# 

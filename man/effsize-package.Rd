@@ -33,6 +33,7 @@ The main functions are:
 \item{0.5.3}{Fixed bug in cohen.d.formula.}
 \item{0.5.4}{Fixed minor issue detected by check.}
 \item{0.5.5}{Changed the effsize field magnitude to a factor value.}
+\item{0.6.0}{Implemented paired computation and CI computation with non-central t-distributions for cohen.d.}
 }
 }
 \author{
@@ -40,3 +41,6 @@ Marco Torchiano \url{http://softeng.polito.it/torchiano/}
 }
 \keyword{ package }
 \keyword{ effect size }
+\keyword{ Cohen }
+\keyword{ Hedges }
+\keyword{ Cliff }

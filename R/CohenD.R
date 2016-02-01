@@ -6,7 +6,7 @@
 cohen.d <- function(d,...) UseMethod("cohen.d")
 
 cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
-                   hedges.correction=FALSE,conf.level=0.95, ...){
+                   hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, ...){
   if( ! any(c("numeric","integer") %in% class(d))){
     stop("First parameter must be a numeric type")
   }
@@ -38,6 +38,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   ns = table(f)
   n1 = ns[1]
   n2 = ns[2]
+  
+  if(paired & (n1!=n2)){
+    stop("Paired computation requires equal number of measures.");
+    return;
+  }
+  
   m = c();
   sd = c();
   for( l in levels(f)){
@@ -46,19 +52,21 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   }
   
   delta.m = m[1] - m[2];
-  
+  if(paired){
+    dd = (delta.m) / sd(diff(d,lag=n1));
+  }else
   if(pooled){
     pool_sd = sqrt(((n1-1)*sd[1]^2+(n2-1)*sd[2]^2)/(n1+n2-2))
-    d = (delta.m) / pool_sd;
+    dd = (delta.m) / pool_sd;
   }else{
-    d = (delta.m) / sd(d);
+    dd = (delta.m) / sd(d);
   }
   df = n1+n2-2
   
   res = list()
   if(hedges.correction){
     # Hedges, L. V. & Olkin, I. (1985). Statistical methods for meta-analysis. Orlando, FL: Academic Press.
-    d = d * (1 - 3 / ( 4 * (n1+n2) - 9))
+    dd = dd * (1 - 3 / ( 4 * (n1+n2) - 9))
     res$method = "Hedges's g"
     res$name = "g"
   }else{
@@ -66,27 +74,79 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     res$name = "d"
   }
   
-  # The Handbook of Research Synthesis and Meta-Analysis (Cooper, Hedges, & Valentine, 2009)
-  ## p 238
-  S_d = sqrt(((n1+n2)/(n1*n2) + .5*d^2/df) * ((n1+n2)/df))
+  if(noncentral){
+    # Based on the document:
+    # David C. Howell (2010)
+    # Confidence Intervals on Effect Size
+    # https://www.uvm.edu/%7Edhowell/methods7/Supplements/Confidence%20Intervals%20on%20Effect%20Size.pdf
+    #
+    # Additional reference:
+    # Cumming, G.; Finch, S. (2001) 
+    # A primer on the understanding, use, and calculation of confidence intervals 
+    # that are based on central and noncentral distributions. 
+    # Educational and Psychological Measurement, 61, 633-649.
+    #
+    if(paired){
+      t = mean(diff(d,lag=n1))/(sd(diff(d,lag=n1))/sqrt(n1))
+      df=n1-1
+    }else{
+      if(pooled) s = pool_sd
+      else s = sd(d)
+      
+      t = delta.m / sqrt(s^2*(1/n1+1/n2))
+    }
+    end1 = t
+    while( pt(q=t,df=df,ncp=end1) > (1-conf.level)/2 ){
+      end1 = end1 * 2
+    }
+    ncp1 = uniroot(function(x) (1-conf.level)/2-pt(q=t,df=df,ncp=x),c(-5,end1))$root
+    
+    end2 = t
+    while( pt(q=t,df=df,ncp=end2) > (1+conf.level)/2 ){
+      end2 = end2 * 2
+    }
+    cat("t: ",t,"  df:",df,"\n")
+    #       cat("-5 -> ",pt(q=t,df=df,ncp=-5),"\n")
+    #       cat(end2," -> ",pt(q=t,df=df,ncp=end2),"\n")
+    ncp2 = uniroot(function(x) (1+conf.level)/2-pt(q=t,df=df,ncp=x),c(-5,end2))$root
+    cat("ncp1:",ncp1,"\n")
+    cat("ncp2:",ncp2,"\n")
+    
+    if(paired){
+      conf.int=sort(c(
+        ncp1/sqrt(df),
+        ncp2/sqrt(df)
+      ));
+    }else{
+      conf.int=sort(c(
+        ncp1*sqrt(1/n1+1/n2),
+        ncp2*sqrt(1/n1+1/n2)
+      ));
+    }
+  }else{
+  # The Handbook of Research Synthesis and Meta-Analysis 
+  # (Cooper, Hedges, & Valentine, 2009)
+  # p 238
+  S_d = sqrt(((n1+n2)/(n1*n2) + .5*dd^2/df) * ((n1+n2)/df))
   
   Z = -qt((1-conf.level)/2,df)
   
   conf.int=c(
-    d - Z*S_d,
-    d + Z*S_d
+    dd - Z*S_d,
+    dd + Z*S_d
   );
+  }
   names(conf.int)=c("inf","sup")
   
   levels = c(0.2,0.5,0.8)
   magnitude = c("negligible","small","medium","large")
   ## Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159. Crow, E. L. (1991).
   
-  res$estimate = d
+  res$estimate = dd
   res$conf.int = conf.int
-  res$var = S_d
+#  res$var = S_d
   res$conf.level = conf.level
-  res$magnitude = factor(magnitude[findInterval(abs(d),levels)+1],levels = magnitude,ordered=T)
+  res$magnitude = factor(magnitude[findInterval(abs(dd),levels)+1],levels = magnitude,ordered=T)
 #      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
 #      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
 
@@ -122,7 +182,5 @@ cohen.d.formula= function(formula, data=list(), ...){
 # d <- rnorm(200)
 # f <- rep(c(1,2),400)
 # cohen.d(d ~ factor(f))
-
-
 
 
