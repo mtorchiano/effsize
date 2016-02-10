@@ -51,8 +51,30 @@
 
 cliff.delta <- function(treatment, ... ) UseMethod("cliff.delta")
 
-cliff.delta.default <- function( treatment, control, conf.level=.95, 
+cliff.delta.default <- function( d, f, conf.level=.95, 
                          use.unbiased=TRUE, use.normal=FALSE, return.dm=FALSE, ...){
+                         
+  if( "character"%in%class(f)|"factor"%in%class(f) ){
+    ## it is data and factor
+    if(length(f)!=length(d)){
+      stop("Data d and factor f must have the same length")
+    }
+    if( "character" %in% class(f)){
+      f = factor(f)
+    }  
+    if(length(levels(f))!=2){
+      stop("Factor f should have only two levels");
+      return;
+    }
+    tc = split(d,f)
+    treatment = tc[[1]]
+    control = tc[[2]]
+  }else{
+    ## it is treatment and control
+    treatment = d
+    control = f
+  }
+
 
   if(conf.level>.9999 | conf.level<.5) stop("conf.level must be within 50% and 99.99%")
   
