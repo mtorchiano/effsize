@@ -17,7 +17,7 @@ cliff.delta(treatment, ... )
                                 use.unbiased=TRUE, use.normal=FALSE, 
                                 return.dm=FALSE, ...)
 
-\method{cliff.delta}{default}(treatment, control, conf.level=.95, 
+\method{cliff.delta}{default}(d, f, treatment, control, conf.level=.95, 
                          use.unbiased=TRUE, use.normal=FALSE, 
                          return.dm=FALSE, ...)
 
@@ -30,6 +30,12 @@ numeric vector or ordered factor of data values for the treatment group (see Det
 }
   \item{control}{
 numeric vector or ordered factor of data values for the control group (see Details)
+}
+ \item{d}{
+a numeric vector giving either the data values (if \code{f} is a factor) or the treatment group values (if \code{f} is a numeric vector)
+}
+  \item{f}{
+either a factor with two levels or a numeric vector of values
 }
   \item{conf.level}{
 confidence level of the confidence interval
