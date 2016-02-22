@@ -1,19 +1,4 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin13.4.0 (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
 
 > 
 > ##########  TEST ###################
@@ -44,6 +29,12 @@ Type 'q()' to quit R.
 + #  inf        sup 
 + #-0.7265846  0.3890062 
 +   assert("small difference", res$magnitude=="small"  )
++   
++   
++   d = c(control,treatment)
++   f = rep(c("Control","_Treat"),c(length(control),length(treatment)))
++   cliff.delta(d,f,use.unbiased=F,use.normal=T)
++   
 + 
 + 
 +   x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)
@@ -83,6 +74,3 @@ delta estimate: -0.06666667 (negligible)
 -0.6082254  0.5172431 
 Dominance matrix  : OK.
 > 
-> proc.time()
-   user  system elapsed 
-  0.145   0.020   0.157 

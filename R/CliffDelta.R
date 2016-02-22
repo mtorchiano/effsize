@@ -49,7 +49,7 @@
 }
 
 
-cliff.delta <- function(treatment, ... ) UseMethod("cliff.delta")
+cliff.delta <- function(d, ... ) UseMethod("cliff.delta")
 
 cliff.delta.default <- function( d, f, conf.level=.95, 
                          use.unbiased=TRUE, use.normal=FALSE, return.dm=FALSE, ...){

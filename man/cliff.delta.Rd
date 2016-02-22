@@ -11,13 +11,13 @@ Computes the Cliff's Delta effect size for ordinal variables
 with the related confidence interval using efficient algorithms.
 }
 \usage{
-cliff.delta(treatment, ... )
+cliff.delta(d, ... )
 
 \method{cliff.delta}{formula}(formula, data=list() ,conf.level=.95, 
                                 use.unbiased=TRUE, use.normal=FALSE, 
                                 return.dm=FALSE, ...)
 
-\method{cliff.delta}{default}(d, f, treatment, control, conf.level=.95, 
+\method{cliff.delta}{default}(d, f, conf.level=.95, 
                          use.unbiased=TRUE, use.normal=FALSE, 
                          return.dm=FALSE, ...)
 
@@ -25,17 +25,11 @@ cliff.delta(treatment, ... )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{treatment}{
-numeric vector or ordered factor of data values for the treatment group (see Details)
-}
-  \item{control}{
-numeric vector or ordered factor of data values for the control group (see Details)
-}
  \item{d}{
 a numeric vector giving either the data values (if \code{f} is a factor) or the treatment group values (if \code{f} is a numeric vector)
 }
   \item{f}{
-either a factor with two levels or a numeric vector of values
+either a factor with two levels or a numeric vector of values (see Detials)
 }
   \item{conf.level}{
 confidence level of the confidence interval

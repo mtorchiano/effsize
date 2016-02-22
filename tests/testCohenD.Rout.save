@@ -1,19 +1,4 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin13.4.0 (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
 
 > ### Cohen's d test
 > library(effsize)
@@ -52,7 +37,29 @@ Two samples with Hedges G : OK.
 > assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
 Two samples from same population : OK.
 > 
+> ## noncentrality t
 > 
-> proc.time()
-   user  system elapsed 
-  0.161   0.022   0.175 
+> delta = c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56) - 1
+> set.seed(50)
+> a = delta
+> set.seed(50)
+> b = delta + runif(10)
+> 
+> eff.d = cohen.d(a,b,paired=TRUE)
+> assert("Paired measures",abs(eff.d$estimate)-1.42 <0.01 )
+Paired measures : OK.
+> 
+> # eff.dc = cohen.d(a,b,paired=TRUE,noncentral = TRUE)
+> # assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
+> # 
+> # 
+> # set.seed(22)
+> # a = rnorm(35,24,sqrt(148.87))
+> # mean(a)
+> # set.seed(31)
+> # b = rnorm(29,16.5,sqrt(139.16))
+> # mean(b)
+> # cohen.d(a,b,noncentral = TRUE)
+> # cohen.d(a,b)
+> # 
+> 

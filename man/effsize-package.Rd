@@ -34,6 +34,7 @@ The main functions are:
 \item{0.5.4}{Fixed minor issue detected by check.}
 \item{0.5.5}{Changed the effsize field magnitude to a factor value.}
 \item{0.6.0}{Implemented paired computation and CI computation with non-central t-distributions for cohen.d.}
+\item{0.6.1}{Added ability to specify factor vector and data vector for `cliff.delta` function (thanks to Joses W. Ho).}
 }
 }
 \author{

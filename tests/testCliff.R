@@ -27,6 +27,12 @@ test_cliff.delta <- function(){
 #  inf        sup 
 #-0.7265846  0.3890062 
   assert("small difference", res$magnitude=="small"  )
+  
+  
+  d = c(control,treatment)
+  f = rep(c("Control","_Treat"),c(length(control),length(treatment)))
+  cliff.delta(d,f,use.unbiased=F,use.normal=T)
+  
 
 
   x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)

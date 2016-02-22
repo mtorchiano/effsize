@@ -14,3 +14,7 @@ Performance*.*
 .RData
 
 .Rhistory
+
+spikes/*
+
+*.history
