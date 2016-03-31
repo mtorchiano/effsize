@@ -35,7 +35,8 @@ a logical indicating whether compute pooled standard deviation or the whole samp
 a logical indicating whether to consider the values as paired 
 }
   \item{na.rm}{
-logical indicating whether \code{NA} should be removed before computation
+logical indicating whether \code{NA}s should be removed before computation;
+if \code{paired==TRUE} then all incomplete pairs are removed.
 }
   \item{hedges.correction}{
 logical indicating whether apply the Hedges correction

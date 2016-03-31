@@ -35,6 +35,7 @@ The main functions are:
 \item{0.5.5}{Changed the effsize field magnitude to a factor value.}
 \item{0.6.0}{Implemented paired computation and CI computation with non-central t-distributions for cohen.d.}
 \item{0.6.1}{Added ability to specify factor vector and data vector for `cliff.delta` function (thanks to Joses W. Ho).}
+\item{0.6.2}{\code{na.rm} in \code{cohen.d} removes all incomplete pairs when paired.}
 }
 }
 \author{

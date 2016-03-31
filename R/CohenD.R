@@ -32,8 +32,18 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   }
   if(na.rm){
     nas = is.na(d) | is.na(f);
-    d = d[!nas];
-    f = f[!nas];
+    if(paired){
+      if(any(nas)){
+        n=length(d)
+        ids = which(nas)
+        ids = c(ids %% (n/2), (ids %% (n/2)) + n/2)
+        d <- d[ - ids]
+        f <- f[ - ids]
+      }
+    }else{
+      d <- d[!nas];
+      f <- f[!nas];
+    }
   }
   ns = table(f)
   n1 = ns[1]
