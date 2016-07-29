@@ -70,7 +70,7 @@ The computation of the CI requires the use of non-central Student-t distribution
 Also a quantification of the effect size magnitude is performed using the thresholds define in Cohen (1992).
 The magnitude is assessed using the thresholds provided in (Cohen 1992), i.e. |d|<0.2 \code{"negligible"}, |d|<0.5 \code{"small"}, |d|<0.8 \code{"medium"}, otherwise \code{"large"}
 
-The variace of the \code{d} is computed using the conversion formula reportead at page 238 of Cooper et al. (2009):
+The variance of the \code{d} is computed using the conversion formula reported at page 238 of Cooper et al. (2009):
 
 \deqn{ S^2_d = \left( \frac{n_1+n_2}{n_1 n_2} + \frac{d^2}{2 df}\right) \left( \frac{n_1+n_2}{df} \right)}{((n1+n2)/(n1*n2) + .5*d^2/df) * ((n1+n2)/df)}
 
