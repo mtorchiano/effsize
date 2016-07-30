@@ -14,3 +14,4 @@ BugReports: https://github.com/mtorchiano/effsize/issues
 License: GPL-2
 NeedsCompilation: no
 Repository: CRAN
+Suggests: testthat
