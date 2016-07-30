@@ -101,7 +101,11 @@ The Handbook of Research Synthesis and Meta-Analysis (Cooper, Hedges, & Valentin
 
 David C. Howell (2010). Confidence Intervals on Effect Size. Available at: \url{https://www.uvm.edu/\%7Edhowell/methods7/Supplements/Confidence\%20Intervals\%20on\%20Effect\%20Size.pdf}
 
-Cumming, G.; Finch, S. (2001). A primer on the understanding, use, and calculation of confidence intervalsthat are based on central and noncentral distributions. Educational and Psychological Measurement, 61, 633-649.
+Cumming, G.; Finch, S. (2001). A primer on the understanding, use, and calculation of confidence intervals that are based on central and noncentral distributions. Educational and Psychological Measurement, 61, 633-649.
+
+Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
+Estimation of effect size from a series of experiments involving paired comparisons. 
+Journal of Educational Statistics, 18, 271-279.
 
 }
 \author{
