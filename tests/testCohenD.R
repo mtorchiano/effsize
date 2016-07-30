@@ -52,6 +52,10 @@ eff.d = cohen.d(x,y,paired=TRUE,na.rm=TRUE)
 
 assert("Paired measures w/NA",abs(eff.d$estimate)-1.73 <0.01 )
 
+eff.d = cohen.d(c(0.2,0.4,0.8,0.9,NA), c(0.12,0.14,0.18,0.119,NA), paired = T, na.rm = T)
+
+assert("Paired measures multiple w/NA",abs(eff.d$estimate)-1.35 <0.01 )
+
 # eff.dc = cohen.d(a,b,paired=TRUE,noncentral = TRUE)
 # assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
 # 

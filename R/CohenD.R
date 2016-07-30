@@ -30,21 +30,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     f = factor(rep(c("Treatment","Control"),c(length(treatment),length(control))),
                levels=c("Treatment","Control"),ordered=T)
   }
-  if(na.rm){
-    nas = is.na(d) | is.na(f);
-    if(paired){
-      if(any(nas)){
-        n=length(d)
-        ids = which(nas)
-        ids = c(ids %% (n/2), (ids %% (n/2)) + n/2)
-        d <- d[ - ids]
-        f <- f[ - ids]
-      }
-    }else{
-      d <- d[!nas];
-      f <- f[!nas];
-    }
-  }
+  
   ns = table(f)
   n1 = ns[1]
   n2 = ns[2]
@@ -53,6 +39,23 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     stop("Paired computation requires equal number of measures.");
     return;
   }
+  
+  if(na.rm){
+    nas = is.na(d) | is.na(f);
+    if(paired){
+      if(any(nas)){
+        n=length(d)
+        nas = rep(nas[1:(n/2)] | nas[(n/2+1):n],2)
+      }
+    }
+    d <- d[!nas];
+    f <- f[!nas];
+
+    ns = table(f)
+    n1 = ns[1]
+    n2 = ns[2]
+  }
+  
   
   m = c();
   sd = c();
@@ -66,6 +69,10 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     dd = (delta.m) / sd(diff(d,lag=n1));
   }else
   if(pooled){
+    # Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
+    # Estimation of effect size from a series of experiments 
+    #    involving paired comparisons. 
+    # Journal of Educational Statistics, 18, 271-279.
     pool_sd = sqrt(((n1-1)*sd[1]^2+(n2-1)*sd[2]^2)/(n1+n2-2))
     dd = (delta.m) / pool_sd;
   }else{
@@ -75,7 +82,9 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   
   res = list()
   if(hedges.correction){
-    # Hedges, L. V. & Olkin, I. (1985). Statistical methods for meta-analysis. Orlando, FL: Academic Press.
+    # Hedges, L. V. & Olkin, I. (1985). 
+    # Statistical methods for meta-analysis. 
+    # Orlando, FL: Academic Press.
     dd = dd * (1 - 3 / ( 4 * (n1+n2) - 9))
     res$method = "Hedges's g"
     res$name = "g"

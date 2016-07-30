@@ -65,6 +65,10 @@ In the formula version, if \code{f} is expected to be a factor, if that is not t
 The function computes the value of Cohen's d statistics (Cohen 1988).
 If required (\code{hedges.correction==TRUE}) the Hedges g statistics is computed instead (Hedges and Holkin, 1985).
 
+When \code{paired} is set, the effect size is computed using the
+approach suggested in (Gibbons et al. 1993).
+
+
 The computation of the CI requires the use of non-central Student-t distributions that are used when \code{noncentral==TRUE}; otherwise a central distribution is used.
 
 Also a quantification of the effect size magnitude is performed using the thresholds define in Cohen (1992).

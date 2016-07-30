@@ -3,7 +3,7 @@
 > ### Cohen's d test
 > library(effsize)
 > library(tools)
-> 
+>
 > assert <- function(label,condition){
 +   cat(label,": ")
 +   if(!condition){
@@ -12,7 +12,7 @@
 +     cat("OK.\n")
 +   }
 + }
-> 
+>
 > set.seed(52)
 > x = rnorm(100,mean=10)
 > y = rnorm(100,mean=12)
@@ -23,7 +23,7 @@
 > assert("Two samples with large difference", eff.d$conf.int[1] < -2 & -2 < eff.d$conf.int[2]  )
 Two samples with large difference : OK.
 > 
-> 
+>
 > eff.g = cohen.d(d,f,hedges.correction=TRUE)
 > assert("Two samples with Hedges G", eff.g$conf.int[1] < -2 & -2 < eff.g$conf.int[2]  )
 Two samples with Hedges G : OK.
@@ -58,7 +58,12 @@ Paired measures : OK.
 > 
 > assert("Paired measures w/NA",abs(eff.d$estimate)-1.73 <0.01 )
 Paired measures w/NA : OK.
-> 
+ 
+> eff.d = cohen.d(c(0.2,0.4,0.8,0.9,NA), c(0.12,0.14,0.18,0.119,NA), paired = T, na.rm = T)
+
+> assert("Paired measures multiple w/NA",abs(eff.d$estimate)-1.35 <0.01 )
+Paired measures multiple w/NA : OK.
+
 > # eff.dc = cohen.d(a,b,paired=TRUE,noncentral = TRUE)
 > # assert("Two samples from same population",eff.d$conf.int[1] < 0 & 0 < eff.d$conf.int[2]  )
 > # 
@@ -72,4 +77,3 @@ Paired measures w/NA : OK.
 > # cohen.d(a,b,noncentral = TRUE)
 > # cohen.d(a,b)
 > # 
-> 
