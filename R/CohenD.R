@@ -124,12 +124,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     while( pt(q=t,df=df,ncp=end2) > (1+conf.level)/2 ){
       end2 = end2 * 2
     }
-    cat("t: ",t,"  df:",df,"\n")
+    #cat("t: ",t,"  df:",df,"\n")
     #       cat("-5 -> ",pt(q=t,df=df,ncp=-5),"\n")
     #       cat(end2," -> ",pt(q=t,df=df,ncp=end2),"\n")
     ncp2 = uniroot(function(x) (1+conf.level)/2-pt(q=t,df=df,ncp=x),c(-5,end2))$root
-    cat("ncp1:",ncp1,"\n")
-    cat("ncp2:",ncp2,"\n")
+    #cat("ncp1:",ncp1,"\n")
+    #cat("ncp2:",ncp2,"\n")
     
     if(paired){
       conf.int=sort(c(
