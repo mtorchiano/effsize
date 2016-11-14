@@ -78,3 +78,15 @@ test_that("Non centrality parameter",{
   expect_equal(as.numeric(eff.d$conf.int[1]),0.137,tolerance=0.01)
   expect_equal(as.numeric(eff.d$conf.int[2]),1.147,tolerance=0.01)
 })
+
+
+test_that("Two samples with large negative difference and noncentral", {
+  set.seed(52)
+  x = rnorm(100,mean=10)
+  y = rnorm(100,mean=12)
+  d = (c(x,y))
+  f = rep(c("A","B"),each=100)
+  eff.d = cohen.d(d,f,noncentral = TRUE)
+  expect_lt(eff.d$conf.int[1], -2)
+  expect_gt(eff.d$conf.int[2], -2)
+})

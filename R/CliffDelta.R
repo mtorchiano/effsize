@@ -45,8 +45,13 @@
     if(!any(above)) break
     L[above] = L[above] - 1
   }
+  if(any(L==H)){
+    H[H==L] = L[H==L] + 1
+  }
+  H[H>length(a)+1] = length(a)+1
   cbind(below=L,above=H)
 }
+
 
 
 cliff.delta <- function(d, ... ) UseMethod("cliff.delta")

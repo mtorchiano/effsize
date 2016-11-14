@@ -9,7 +9,7 @@ test_that("Small differences", {
   control = c(10,20,30,40,40,50)
   
   res = cliff.delta(treatment,control,use.unbiased=F,use.normal=T)
-  
+  res.dm = cliff.delta(treatment,control,return.dm=T,use.unbiased=F,use.normal=T)
 #Cliff's Delta
 #
 #delta estimate: -0.25 (small)
@@ -18,6 +18,8 @@ test_that("Small differences", {
 #-0.7265846  0.3890062 
   expect_equal(as.character(res$magnitude),"small")
   expect_equal(res$estimate,-0.25)
+  expect_equal(res$estimate,res.dm$estimate)
+  
 }) 
 
 
@@ -42,7 +44,33 @@ test_that("Negligible differences", {
   x2 = c(10, 20, 30, 40, 40, 50)
 
   res<-cliff.delta(x1, x2)
+  res.dm <- cliff.delta(x1, x2,return.dm = TRUE)
   expect_equal(as.character(res$magnitude),"negligible")
-
+  expect_equal(res$estimate,-0.06666,tolerance=0.00001)
+  expect_equal(res$estimate,res.dm$estimate)
 })
 
+test_that("Non overlapping", {
+  x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)
+  x2 = c(10, 20, 30, 40, 40, 50) + 110
+  
+  res<-cliff.delta(x1, x2)
+  expect_equal(as.character(res$magnitude),"large")
+  
+})
+
+test_that("Consistence between naive and partitioning", {
+  set.seed(1097)
+  
+  for(i in 1:100){
+    n = round(runif(2,10,20))
+    
+    x1 = round(runif(n[1],1,20))
+    x2 = round(runif(n[2],15,30))
+    
+    res<-cliff.delta(x1, x2)
+    res.dm<-cliff.delta(x1, x2,return.dm = TRUE)
+    
+    expect_equal(res$estimate,res.dm$estimate)  
+  }
+})

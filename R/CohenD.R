@@ -116,18 +116,22 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     }
     end1 = t
     while( pt(q=t,df=df,ncp=end1) > (1-conf.level)/2 ){
-      end1 = end1 * 2
+      #end1 = end1 * 2
+      end1 <- end1 + abs(end1)
     }
-    ncp1 = uniroot(function(x) (1-conf.level)/2-pt(q=t,df=df,ncp=x),c(-5,end1))$root
+    ncp1 = uniroot(function(x) (1-conf.level)/2-pt(q=t,df=df,ncp=x),
+                   c(2*t-end1,end1))$root
     
     end2 = t
-    while( pt(q=t,df=df,ncp=end2) > (1+conf.level)/2 ){
-      end2 = end2 * 2
+    while( pt(q=t,df=df,ncp=end2) < (1+conf.level)/2 ){
+      #end2 = end2 * 2
+      end2 <- end2 - abs(end2)
     }
     #cat("t: ",t,"  df:",df,"\n")
     #       cat("-5 -> ",pt(q=t,df=df,ncp=-5),"\n")
     #       cat(end2," -> ",pt(q=t,df=df,ncp=end2),"\n")
-    ncp2 = uniroot(function(x) (1+conf.level)/2-pt(q=t,df=df,ncp=x),c(-5,end2))$root
+    ncp2 = uniroot(function(x) (1+conf.level)/2-pt(q=t,df=df,ncp=x),
+                   c(end2,2*t-end2))$root
     #cat("ncp1:",ncp1,"\n")
     #cat("ncp2:",ncp2,"\n")
     
