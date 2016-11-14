@@ -1,7 +1,7 @@
 Package: effsize
 Type: Package
 Title: Efficient Effect Size Computation
-Version: 0.6.8
+Version: 0.7.0
 Date: 2016-08-08
 Authors@R: c(person("Marco", "Torchiano", role = c("aut", "cre"),
                               email="marco.torchiano@polito.it"))
