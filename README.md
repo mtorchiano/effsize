@@ -11,3 +11,4 @@ computation even with very large data sets.
 The package is available on the CRAN web site: 
 http://cran.r-project.org/web/packages/effsize/index.html
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.196082.svg)](https://doi.org/10.5281/zenodo.196082)
