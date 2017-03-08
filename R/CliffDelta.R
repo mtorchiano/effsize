@@ -68,8 +68,12 @@ cliff.delta.default <- function( d, f, conf.level=.95,
       f = factor(f)
     }  
     if(length(levels(f))!=2){
-      stop("Factor f should have only two levels");
-      return;
+      if(length(unique(f))==2){
+        warning("Factor with multiple levles, using only the two actually present in data");
+      }else{
+        stop("Factor should have only two levels");
+        return;
+      }
     }
     tc = split(d,f)
     treatment = tc[[1]]
@@ -104,42 +108,43 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     d_.j = rep(d_.jC,fc*n2) 
     
     SSR = t((dm_L-d)^2 %*% (fc*n2)) %*% ft *n1 
-  }else{
-  treatment = sort(treatment)
-  control = sort(control)
-  
-  if(return.dm){ ## explicitly compute dominance matrix
-    algorithm="Naive"
-    dominance = sign(outer(treatment, control, FUN="-")) 
-    row.names(dominance) = treatment
-    colnames(dominance) = control
+  }else{ 
+    ## not a factor
+    treatment = sort(treatment)
+    control = sort(control)
     
-    d = mean(dominance)
-    d_i. = apply(dominance,1,mean)
-    d_.j = apply(dominance,2,mean)
-    SSR = sum( (dominance-d)^2 )
-  }else{ ## uses row partitioning algorithm
-    algorithm="Row partitioning"
-    partitions = .bsearch.partition(treatment,control)
-    partitions[,2] = n2 - partitions[,2] + 1L
-    partitions[partitions[,1]>n2,1] = n2
-    d_i. = partitions %*% c(1L,-1L) / n2
-    
-    d = mean(d_i.)
-    pb = sum(partitions[,1])
-    pa = sum(partitions[,2])
-    partitions = .bsearch.partition(control,treatment)
-    partitions[,2] = n1 - partitions[,2] + 1L
-    partitions[partitions[,1]>n1,2] = n1
-    d_.j = partitions %*% c(-1L,1L) / n1
-    
-    #     d_.j = rep(NA,n2)
-    #     for(i in 1:n2){
-    #       d_.j = sum(partitions[,1]>=i) -sum(partitions[,1]<n2-i)
-    #     }
-    
-    SSR = pb * (1-d)^2 + (as.double(n1)*n2-pa-pb)*d^2 + pa*(1+d)^2 
-  }
+    if(return.dm){ ## explicitly compute dominance matrix
+      algorithm="Naive"
+      dominance = sign(outer(treatment, control, FUN="-")) 
+      row.names(dominance) = treatment
+      colnames(dominance) = control
+      
+      d = mean(dominance)
+      d_i. = apply(dominance,1,mean)
+      d_.j = apply(dominance,2,mean)
+      SSR = sum( (dominance-d)^2 )
+    }else{ ## uses row partitioning algorithm
+      algorithm="Row partitioning"
+      partitions = .bsearch.partition(treatment,control)
+      partitions[,2] = n2 - partitions[,2] + 1L
+      partitions[partitions[,1]>n2,1] = n2
+      d_i. = partitions %*% c(1L,-1L) / n2
+      
+      d = mean(d_i.)
+      pb = sum(partitions[,1])
+      pa = sum(partitions[,2])
+      partitions = .bsearch.partition(control,treatment)
+      partitions[,2] = n1 - partitions[,2] + 1L
+      partitions[partitions[,1]>n1,2] = n1
+      d_.j = partitions %*% c(-1L,1L) / n1
+      
+      #     d_.j = rep(NA,n2)
+      #     for(i in 1:n2){
+      #       d_.j = sum(partitions[,1]>=i) -sum(partitions[,1]<n2-i)
+      #     }
+      
+      SSR = pb * (1-d)^2 + (as.double(n1)*n2-pa-pb)*d^2 + pa*(1+d)^2 
+    }
   }
   ## Compute variance
   if(use.unbiased){
@@ -156,33 +161,33 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     S_d = ( (n2-1)*S_i. + (n1-1)*S_.j + S_ij) / ( as.double(n1) * n2)
   }
   
-if(use.normal){
-  ## assume a normal distribution
-Z = -qnorm((1-conf.level)/2)
-}else{
-  ## assume a Student t distribution See (Feng & Cliff, 2004) 
-Z = -qt((1-conf.level)/2,n1+n2-2)
-}
-conf.int = c(
-  ( d - d^3 - Z * sqrt(S_d) * sqrt((1-d^2)^2+Z^2*S_d )) / ( 1 - d^2+Z^2*S_d),
-  ( d - d^3 + Z * sqrt(S_d) * sqrt((1-d^2)^2+Z^2*S_d )) / ( 1 - d^2+Z^2*S_d)
-)
-names(conf.int) = c("inf","sup")
-  
-  levels = c(0.147,0.33,0.474) ## effect sizes from (Hess and Kromrey, 2004)
-  magnitude = c("negligible","small","medium","large")
-res= 
- list(
-  estimate = d,
-  conf.int = conf.int,
-  var = S_d,
-  conf.level = conf.level,
-  magnitude = factor(magnitude[findInterval(abs(d),levels)+1],levels = magnitude,ordered=T),
-  method = "Cliff's Delta",
-  algorithm = algorithm,
-  variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
-  CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
+  if(use.normal){
+    ## assume a normal distribution
+    Z = -qnorm((1-conf.level)/2)
+  }else{
+    ## assume a Student t distribution See (Feng & Cliff, 2004) 
+    Z = -qt((1-conf.level)/2,n1+n2-2)
+  }
+  conf.int = c(
+    ( d - d^3 - Z * sqrt(S_d) * sqrt((1-d^2)^2+Z^2*S_d )) / ( 1 - d^2+Z^2*S_d),
+    ( d - d^3 + Z * sqrt(S_d) * sqrt((1-d^2)^2+Z^2*S_d )) / ( 1 - d^2+Z^2*S_d)
   )
+  names(conf.int) = c("inf","sup")
+    
+  mag.levels = c(0.147,0.33,0.474) ## effect sizes from (Hess and Kromrey, 2004)
+  magnitude = c("negligible","small","medium","large")
+  res= 
+   list(
+    estimate = d,
+    conf.int = conf.int,
+    var = S_d,
+    conf.level = conf.level,
+    magnitude = factor(magnitude[findInterval(abs(d),mag.levels)+1],levels = magnitude,ordered=T),
+    method = "Cliff's Delta",
+    algorithm = algorithm,
+    variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
+    CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
+    )
   if(return.dm){
     res$dm = dominance;
   }
