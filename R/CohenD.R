@@ -19,8 +19,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
         f = factor(f)
     }  
     if(length(levels(f))!=2){
-      stop("Factor should have only two levels");
-      return;
+      if(length(unique(f))==2){
+        warning("Factor with multiple levles, using only the two actually present in data");
+      }else{
+        stop("Factor should have only two levels");
+        return;
+      }
     }
   }else{
     ## it is treatment and control
@@ -59,7 +63,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   
   m = c();
   sd = c();
-  for( l in levels(f)){
+  for( l in unique(f)){
     m = c(m,mean(d[f==l]));
     sd = c(sd,sd(d[f==l]));
   }
@@ -76,7 +80,8 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     pool_sd = sqrt(((n1-1)*sd[1]^2+(n2-1)*sd[2]^2)/(n1+n2-2))
     dd = (delta.m) / pool_sd;
   }else{
-    dd = (delta.m) / sd(d);
+    #dd = (delta.m) / sd(d);
+    dd = (delta.m) / sd[2]; ## Glass's Delta
   }
   df = n1+n2-2
   
@@ -89,8 +94,13 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     res$method = "Hedges's g"
     res$name = "g"
   }else{
-    res$method = "Cohen's d"
-    res$name = "d"
+    if(pooled){
+      res$method = "Cohen's d"
+      res$name = "d"
+    }else{
+      res$method = "Glass's Delta"
+      res$name = "Delta"
+    }
   }
   
   if(noncentral){
@@ -147,21 +157,28 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       ));
     }
   }else{
-  # The Handbook of Research Synthesis and Meta-Analysis 
-  # (Cooper, Hedges, & Valentine, 2009)
-  # p 238
-  S_d = sqrt(((n1+n2)/(n1*n2) + .5*dd^2/df) * ((n1+n2)/df))
-  
-  Z = -qt((1-conf.level)/2,df)
-  
-  conf.int=c(
-    dd - Z*S_d,
-    dd + Z*S_d
-  );
+    ## PRobably the source is incorrect!!
+    ## The Handbook of Research Synthesis and Meta-Analysis 
+    ## (Cooper, Hedges, & Valentine, 2009)
+    ## p 238
+    #S_d = sqrt(((n1+n2)/(n1*n2) + .5*dd^2/df) * ((n1+n2)/df))
+    
+    # Robert J. Grissom and John J. Kim (2005)
+    # Effect size for researchers
+    # Lawrence Erlbaum Associates
+    # Equation 3.13 page 60
+    S_d = sqrt((n1+n2)/(n1*n2) + .5*dd^2/(n1+n2))
+    
+    Z = -qt((1-conf.level)/2,df)
+    
+    conf.int=c(
+      dd - Z*S_d,
+      dd + Z*S_d
+    );
   }
   names(conf.int)=c("inf","sup")
   
-  levels = c(0.2,0.5,0.8)
+  mag.levels = c(0.2,0.5,0.8)
   magnitude = c("negligible","small","medium","large")
   ## Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159. Crow, E. L. (1991).
   
@@ -169,7 +186,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   res$conf.int = conf.int
 #  res$var = S_d
   res$conf.level = conf.level
-  res$magnitude = factor(magnitude[findInterval(abs(dd),levels)+1],levels = magnitude,ordered=T)
+  res$magnitude = factor(magnitude[findInterval(abs(dd),mag.levels)+1],levels = magnitude,ordered=T)
 #      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
 #      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
 
