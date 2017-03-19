@@ -135,7 +135,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     end2 = t
     while( pt(q=t,df=df,ncp=end2) < (1+conf.level)/2 ){
       #end2 = end2 * 2
-      end2 <- end2 - abs(end2)
+      end2 <- end2 - abs(t)
     }
     #cat("t: ",t,"  df:",df,"\n")
     #       cat("-5 -> ",pt(q=t,df=df,ncp=-5),"\n")
