@@ -90,3 +90,22 @@ test_that("Two samples with large negative difference and noncentral", {
   expect_lt(eff.d$conf.int[1], -2)
   expect_gt(eff.d$conf.int[2], -2)
 })
+
+
+try_with_time_limit <- function(expr, cpu = Inf, elapsed = Inf)
+{
+  y <- try({setTimeLimit(cpu, elapsed); expr}, silent = TRUE) 
+  if(inherits(y, "try-error")) NULL else y 
+}
+
+# issue #23 noncentral error (infinite loop)
+test_that("Two samples with large negative difference and noncentral", {
+  a = c(9.81605624621576, 8.93891560898168, 9.05436620537713, 6.01771305071382, 
+        8.98575772172126, 7.2595761413452, 13.7537304479165, 9.89861975363729, 
+        7.37246838418731, 8.33888742066376)
+  b = c(8.62798051757027, 5.25390514295654, 12.0869496333763, 7.20553319908951, 
+        6.99017188584104, 8.22363490828756, 8.05485287987422, 6.50534569228974, 
+        8.68871033652186, 4.62897740315003)
+  res = try_with_time_limit(cohen.d(a,b,hedges.correction = FALSE, noncentral =TRUE),1) 
+  expect_equal(as.numeric(res$estimate),0.63236,tolerance = .0001)
+})

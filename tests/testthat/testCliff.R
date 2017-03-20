@@ -74,3 +74,17 @@ test_that("Consistence between naive and partitioning", {
     expect_equal(res$estimate,res.dm$estimate)  
   }
 })
+
+
+test_that("Resonable CI for extrem cases", {
+  set.seed(1097)
+  
+    n = round(runif(2,10,20))
+    
+    x1 = round(runif(n[1],1,10))
+    x2 = round(runif(n[2],15,30))
+    
+    expect_warning( res<<-cliff.delta(x1, x2) )
+
+    expect_false(any(is.na(res$conf.int)))
+})
