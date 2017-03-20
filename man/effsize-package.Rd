@@ -43,6 +43,7 @@ Minor documentation changes}
 Fixed a bug in cliff.delta returning inconsistent
 results when the dominance matrix is returned. Fixed issue concerning CI.
 Fixed bug in cohen.d when using noncentral parameter for negative effect sizes.}
+\item{0.7.1}{Fixed minor bugs in Cliff delta and Cohen.d}
 }
 }
 \author{
