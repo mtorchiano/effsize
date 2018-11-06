@@ -63,7 +63,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   
   m = c();
   sd = c();
-  for( l in unique(f)){
+  for( l in levels(f)){
     m = c(m,mean(d[f==l]));
     sd = c(sd,sd(d[f==l]));
   }

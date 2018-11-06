@@ -109,3 +109,28 @@ test_that("Two samples with large negative difference and noncentral", {
   res = try_with_time_limit(cohen.d(a,b,hedges.correction = FALSE, noncentral =TRUE),1) 
   expect_equal(as.numeric(res$estimate),0.63236,tolerance = .0001)
 })
+
+#issue #27 Cohen.d gives wrong value when data is not arranged by f
+test_that("Order of factor values does not affect result",{
+  set.seed(25)
+  d.data <- data.frame(group = factor(sample(c(1,2), 20, replace = T, prob = c(.33,.67))),
+                       value = rnorm(60,100,15))
+  group1 <- d.data$value[d.data$group==1]
+  group2 <- d.data$value[d.data$group==2]
+  d.data.arranged <- d.data[order(d.data$group),]
+  r1 <- cohen.d(d.data$value ~ d.data$group)
+  r2 <- cohen.d(d.data.arranged$value ~ d.data.arranged$group)
+  
+  expect_equal(as.numeric(r1$estimate),as.numeric(r2$estimate))
+})
+
+#spin-off of issue #27 Cohen.d gives wrong value when data is not arranged by f
+test_that("When inverting control and treatment effsize just change sign",{
+  set.seed(7)
+  group1 <- rnorm(20,100,15)
+  group2 <- rnorm(40,100,15)
+  r1 <- cohen.d(group1,group2)
+  r2 <- cohen.d(group2,group1)
+  
+  expect_equal(r1$estimate,-r2$estimate)
+})
