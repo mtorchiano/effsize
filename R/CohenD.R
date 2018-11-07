@@ -176,7 +176,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       dd + Z*S_d
     );
   }
-  names(conf.int)=c("inf","sup")
+  names(conf.int)=c("lower","upper")
   
   mag.levels = c(0.2,0.5,0.8)
   magnitude = c("negligible","small","medium","large")

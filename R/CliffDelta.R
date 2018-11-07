@@ -179,7 +179,7 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     ( d. - d.^3 - Z * sqrt(S_d) * sqrt((1-d.^2)^2+Z^2*S_d )) / ( 1 - d.^2+Z^2*S_d),
     ( d. - d.^3 + Z * sqrt(S_d) * sqrt((1-d.^2)^2+Z^2*S_d )) / ( 1 - d.^2+Z^2*S_d)
   )
-  names(conf.int) = c("inf","sup")
+  names(conf.int) = c("lower","upper")
   if(d==1){
     conf.int[2] = 1
   }
