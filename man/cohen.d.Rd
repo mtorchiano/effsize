@@ -29,7 +29,7 @@ a numeric vector giving either the data values (if \code{f} is a factor) or the 
 either a factor with two levels or a numeric vector of values
 }
   \item{pooled}{
-a logical indicating whether compute pooled standard deviation or the whole sample standard deviation
+a logical indicating whether compute pooled standard deviation or the whole sample standard deviation. If \code{pooled=FALSE} (default) pooled sd is used, if \code{pooled=FALSE} the standard deviation of the the control group (the second argument or the one corresponding the the second level of the factor) is used instead.
 }
   \item{paired}{
 a logical indicating whether to consider the values as paired 
@@ -81,7 +81,7 @@ The variance of the \code{d} is computed using the conversion formula reported a
 }
 \value{
 A list of class \code{effsize} containing the following components:
-\item{estimate}{the statistics estimate}
+\item{estimate}{the statistic estimate}
 \item{conf.int}{the confidence interval of the statistic}
 \item{var}{the estimated variance of the statistic}
 \item{conf.level}{the confidence level used to compute the confidence interval}
