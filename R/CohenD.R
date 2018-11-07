@@ -116,7 +116,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     # Educational and Psychological Measurement, 61, 633-649.
     #
     if(paired){
-      t = mean(diff(d,lag=n1))/(sd(diff(d,lag=n1))/sqrt(n1))
+      t = delta.m/(sd(diff(d,lag=n1))/sqrt(n1))
       df=n1-1
     }else{
       if(pooled) s = pool_sd
@@ -157,7 +157,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       ));
     }
   }else{
-    ## PRobably the source is incorrect!!
+    ## Probably the source is incorrect!!
     ## The Handbook of Research Synthesis and Meta-Analysis 
     ## (Cooper, Hedges, & Valentine, 2009)
     ## p 238

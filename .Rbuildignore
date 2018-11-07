@@ -2,8 +2,10 @@
 ^\.Rproj\.user$
 ^spikes
 ^paper
+^reference
 ^vignettes_draft
 ^Performance
 ^README.md$
 ^.git\.*$
+^.travis.yml
 ^LICENSE$

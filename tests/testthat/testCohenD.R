@@ -1,6 +1,15 @@
 ### Cohen's d test
 library(effsize)
 
+generate_data <- function(n,m,stdev){
+  x <- rnorm(n,m,stdev)
+  sd.adj = stdev/sd(x)
+  x <- x * sd.adj
+  m.adj = m - mean(x)
+  x <- x + m.adj
+  return(x)
+}
+
 context("Cohen d")
 
 test_that("Two samples with large difference", {
@@ -133,4 +142,33 @@ test_that("When inverting control and treatment effsize just change sign",{
   r2 <- cohen.d(group2,group1)
   
   expect_equal(r1$estimate,-r2$estimate)
+})
+
+
+# issue #28 confidence interval with non-central distribution for paired data
+test_that("confidence interval with non-central distribution for paired data",{
+  # data from https://www.uvm.edu/%7Edhowell/methods7/Supplements/Confidence%20Intervals%20on%20Effect%20Size.pdf
+  moon.data = c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56)
+  g1 = rep(1,length(moon.data))
+  res = effsize::cohen.d(moon.data,g1,
+                   paired = TRUE,
+                   noncentral = TRUE,
+                   conf.level = 0.95
+  )  
+  expect_equal(as.numeric(res$conf.int[1]),0.4907785,tolerance = .000001)
+  expect_equal(as.numeric(res$conf.int[2]),2.3358769,tolerance = .000001)
+})
+
+
+# issue #28 confidence interval with non-central distribution for two samples
+test_that("confidence interval with non-central distribution for two samples",{
+  # data from https://www.uvm.edu/%7Edhowell/methods7/Supplements/Confidence%20Intervals%20on%20Effect%20Size.pdf
+  set.seed(537)
+  hf = generate_data(35,24,sqrt(148.87))
+  nhf = generate_data(29,16.5,sqrt(139.16))
+  
+  res= cohen.d(hf,nhf,noncentral=TRUE)
+
+  expect_equal(as.numeric(res$conf.int[1]),0.117,tolerance = .001)
+  expect_equal(as.numeric(res$conf.int[2]),1.126,tolerance = .001)
 })
