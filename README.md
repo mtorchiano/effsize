@@ -11,7 +11,16 @@ computation even with very large data sets.
 The package is available on the CRAN web site: 
 http://cran.r-project.org/web/packages/effsize/index.html
 
+In case you wish using a version not yet on the CRAN web site you can use the `devtools` package:
+
+```r
+install.packages("devtools")  ## if not already installed
+devtools::install_github("mtorchiano/effsize")
+```
+
+If you find the package useful and use it in your research, please consider citing it using the version published on Zenodo:
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.196082.svg)](https://doi.org/10.5281/zenodo.196082)
+
 
 ### Dev Status
 
