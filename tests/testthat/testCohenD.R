@@ -1,6 +1,12 @@
 ### Cohen's d test
 library(effsize)
 
+try_with_time_limit <- function(expr, cpu = Inf, elapsed = Inf){
+  y <- try({setTimeLimit(cpu, elapsed); expr}, silent = TRUE) 
+  if(inherits(y, "try-error")) stop("Operation timed out") else y 
+}
+
+
 generate_data <- function(n,m,stdev){
   x <- rnorm(n,m,stdev)
   sd.adj = stdev/sd(x)
@@ -101,12 +107,6 @@ test_that("Two samples with large negative difference and noncentral", {
 })
 
 
-try_with_time_limit <- function(expr, cpu = Inf, elapsed = Inf)
-{
-  y <- try({setTimeLimit(cpu, elapsed); expr}, silent = TRUE) 
-  if(inherits(y, "try-error")) NULL else y 
-}
-
 # issue #23 noncentral error (infinite loop)
 test_that("Two samples with large negative difference and noncentral", {
   a = c(9.81605624621576, 8.93891560898168, 9.05436620537713, 6.01771305071382, 
@@ -118,6 +118,7 @@ test_that("Two samples with large negative difference and noncentral", {
   res = try_with_time_limit(cohen.d(a,b,hedges.correction = FALSE, noncentral =TRUE),1) 
   expect_equal(as.numeric(res$estimate),0.63236,tolerance = .0001)
 })
+
 
 #issue #27 Cohen.d gives wrong value when data is not arranged by f
 test_that("Order of factor values does not affect result",{
@@ -172,3 +173,15 @@ test_that("confidence interval with non-central distribution for two samples",{
   expect_equal(as.numeric(res$conf.int[1]),0.117,tolerance = .001)
   expect_equal(as.numeric(res$conf.int[2]),1.126,tolerance = .001)
 })
+
+
+# issue #?? unpaired noncentral error (infinite loop)
+test_that("Two samples paired formula paired and  noncentral", {
+  data(sleep)
+  res = try_with_time_limit(cohen.d(extra ~ group,
+                                    data = sleep, 
+                                    noncentral =TRUE),1)
+  expect_equal(as.numeric(res$estimate),-0.8321,tolerance = .0001)
+  
+})
+

@@ -35,7 +35,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
                levels=c("Treatment","Control"),ordered=T)
   }
   
-  ns = table(f)
+  ns = as.numeric(table(f))
   n1 = ns[1]
   n2 = ns[2]
   
@@ -62,26 +62,26 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   
   
   m = c();
-  sd = c();
+  s = c();
   for( l in levels(f)){
     m = c(m,mean(d[f==l]));
-    sd = c(sd,sd(d[f==l]));
+    s = c(s,sd(d[f==l]));
   }
   
-  delta.m = m[1] - m[2];
+  delta.m = as.numeric(m[1] - m[2]);
   if(paired){
-    dd = (delta.m) / sd(diff(d,lag=n1));
+    dd = delta.m / sd(diff(d,lag=n1));
   }else
   if(pooled){
     # Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
     # Estimation of effect size from a series of experiments 
     #    involving paired comparisons. 
     # Journal of Educational Statistics, 18, 271-279.
-    pool_sd = sqrt(((n1-1)*sd[1]^2+(n2-1)*sd[2]^2)/(n1+n2-2))
-    dd = (delta.m) / pool_sd;
+    pool_sd = sqrt(((n1-1)*s[1]^2+(n2-1)*s[2]^2)/(n1+n2-2))
+    dd = delta.m / pool_sd;
   }else{
     #dd = (delta.m) / sd(d);
-    dd = (delta.m) / sd[2]; ## Glass's Delta
+    dd = (delta.m) / s[2]; ## Glass's Delta
   }
   df = n1+n2-2
   
@@ -124,10 +124,11 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       
       t = delta.m / sqrt(s^2*(1/n1+1/n2))
     }
+    st = max(0.1,abs(t))
     end1 = t
     while( pt(q=t,df=df,ncp=end1) > (1-conf.level)/2 ){
       #end1 = end1 * 2
-      end1 <- end1 + abs(end1)
+      end1 <- end1 + st
     }
     ncp1 = uniroot(function(x) (1-conf.level)/2-pt(q=t,df=df,ncp=x),
                    c(2*t-end1,end1))$root
@@ -135,7 +136,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     end2 = t
     while( pt(q=t,df=df,ncp=end2) < (1+conf.level)/2 ){
       #end2 = end2 * 2
-      end2 <- end2 - abs(t)
+      end2 <- end2 - st
     }
     #cat("t: ",t,"  df:",df,"\n")
     #       cat("-5 -> ",pt(q=t,df=df,ncp=-5),"\n")

@@ -39,12 +39,13 @@ The main functions are:
 \item{0.6.3}{fixed bug in \code{cohen.d} when \code{na.rm=TRUE}, minor changes in the documentation (thanks to P.Thomas)}
 \item{0.6.4}{Fixed a bug related to paired cohen.d with NAs.
 Minor documentation changes}
-\item{0.7.0}{Refacatored tests using testthat package.
+\item{0.7.0}{Refactored tests using testthat package.
 Fixed a bug in cliff.delta returning inconsistent
 results when the dominance matrix is returned. Fixed issue concerning CI.
 Fixed bug in cohen.d when using noncentral parameter for negative effect sizes.}
 \item{0.7.1}{Fixed minor bugs in Cliff delta and Cohen.d}
 \item{0.7.2}{Fixed bugs Cohen.d, order of factors is now observed and CI are computed correctly}
+\item{0.7.3}{Fixed bugs in Cohen.d, possible endless loop}
 }
 }
 \author{

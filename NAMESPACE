@@ -1,4 +1,4 @@
-importFrom("stats", "model.frame", "pt", "qnorm", "qt", "uniroot")
+importFrom("stats", "model.frame", "pt", "qnorm", "qt", "uniroot","sd")
 exportPattern("^[[:alpha:]]+")
 S3method(cliff.delta, formula)
 S3method(cliff.delta, default)
