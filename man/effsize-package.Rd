@@ -29,23 +29,24 @@ The main functions are:
 \item{0.4.1}{Code clean-up and optimization using vectorized binary partioning.}
 \item{0.5}{Added Vargha and Delaney A and fixed minor bugs with Cohen.d.}
 \item{0.5.1}{Modified the Vargha and Delaney A computation to minimize accuracy errors.}
-\item{0.5.2}{Fixed bug in cliff.delta.}
-\item{0.5.3}{Fixed bug in cohen.d.formula.}
+\item{0.5.2}{Fixed bug in \code{cliff.delta}.}
+\item{0.5.3}{Fixed bug in  \code{cohen.d.formula}.}
 \item{0.5.4}{Fixed minor issue detected by check.}
 \item{0.5.5}{Changed the effsize field magnitude to a factor value.}
 \item{0.6.0}{Implemented paired computation and CI computation with non-central t-distributions for cohen.d.}
 \item{0.6.1}{Added ability to specify factor vector and data vector for `cliff.delta` function (thanks to Joses W. Ho).}
 \item{0.6.2}{\code{na.rm} in \code{cohen.d} removes all incomplete pairs when paired.}
 \item{0.6.3}{fixed bug in \code{cohen.d} when \code{na.rm=TRUE}, minor changes in the documentation (thanks to P.Thomas)}
-\item{0.6.4}{Fixed a bug related to paired cohen.d with NAs.
+\item{0.6.4}{Fixed a bug related to paired\code{cohen.d} with NAs.
 Minor documentation changes}
-\item{0.7.0}{Refactored tests using testthat package.
-Fixed a bug in cliff.delta returning inconsistent
+\item{0.7.0}{Refactored tests using \code{testthat} package.
+Fixed a bug in \code{cliff.delta} returning inconsistent
 results when the dominance matrix is returned. Fixed issue concerning CI.
-Fixed bug in cohen.d when using noncentral parameter for negative effect sizes.}
-\item{0.7.1}{Fixed minor bugs in Cliff delta and Cohen.d}
-\item{0.7.2}{Fixed bugs Cohen.d, order of factors is now observed and CI are computed correctly}
-\item{0.7.3}{Fixed bugs in Cohen.d, possible endless loop}
+Fixed bug in \code{cohen.d} when using noncentral parameter for negative effect sizes.}
+\item{0.7.1}{Fixed minor bugs in  \code{cliff.delta} and \code{cohen.d}}
+\item{0.7.2}{Fixed bugs in \code{cohen.d}, order of factors is now observed and CI are computed correctly}
+\item{0.7.3}{Fixed bugs in \code{cohen.d}, possible endless loop, cleaned code}
+\item{0.7.4}{Fixed bugs in \code{cliff.delta} when values are factors}
 }
 }
 \author{

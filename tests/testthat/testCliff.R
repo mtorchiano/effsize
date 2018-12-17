@@ -88,3 +88,10 @@ test_that("Resonable CI for extrem cases", {
 
     expect_false(any(is.na(res$conf.int)))
 })
+
+test_that("double factor", {
+  d <- data.frame(v = c("A","B","A","C","B","C","B","B","C","B"),
+                  f = rep(c("G1","G2"),each=5))
+  cliff.delta(v ~ f, data=d)
+  cliff.delta(d$v , d$f)
+})

@@ -58,8 +58,16 @@ cliff.delta <- function(d, ... ) UseMethod("cliff.delta")
 
 cliff.delta.default <- function( d, f, conf.level=.95, 
                          use.unbiased=TRUE, use.normal=FALSE, return.dm=FALSE, ...){
-                         
-  if( "character"%in%class(f)|"factor"%in%class(f) ){
+  same_levels <- function(f1,f2){
+    if(is.factor(f1) & is.factor(f2)){
+      l1 = levels(f1);
+      l2 = levels(f2);
+      if(length(l1)==length(l2))
+        return( all(l1==l2) )
+    }
+    return(FALSE)
+  }
+  if( "character"%in%class(f)| (is.factor(f) & !same_levels(d,f))){
     ## it is data and factor
     if(length(f)!=length(d)){
       stop("Data d and factor f must have the same length")
@@ -69,7 +77,7 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     }  
     if(length(levels(f))!=2){
       if(length(unique(f))==2){
-        warning("Factor with multiple levles, using only the two actually present in data");
+        warning("Factor with multiple levles, using only those effectively present in data");
       }else{
         stop("Factor should have only two levels");
         return;
@@ -97,8 +105,8 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     ft = table(treatment) / n1
     fc = table(control) / n2
     ## Note: in principle they should share the same levels
-    lt = as.numeric(levels(treatment))
-    lc = as.numeric(levels(control))
+    lt = seq_along(levels(treatment))
+    lc = seq_along(levels(control))
     
     dm_L = sign(outer(lt,lc,FUN="-"))
     
