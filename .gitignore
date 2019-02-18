@@ -9,3 +9,5 @@ Performance*.*
 spikes/*
 .Rhistory
 .RData
+reverse/*
+reference/*

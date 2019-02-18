@@ -70,18 +70,27 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   
   delta.m = as.numeric(m[1] - m[2]);
   if(paired){
-    dd = delta.m / sd(diff(d,lag=n1));
+    #    Michael Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein
+    #    Introduction to Meta-Analysis.
+    # Formula 4.27
+    s.dif = sd(diff(d,lag=n1))
+    vals = split(d,f)
+    r = cor(vals[[1]],vals[[2]])
+    stdev = sd(diff(d,lag=n1)) / sqrt(2-2*r)
+    
+    dd = delta.m / stdev;
   }else
   if(pooled){
     # Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
     # Estimation of effect size from a series of experiments 
     #    involving paired comparisons. 
     # Journal of Educational Statistics, 18, 271-279.
-    pool_sd = sqrt(((n1-1)*s[1]^2+(n2-1)*s[2]^2)/(n1+n2-2))
-    dd = delta.m / pool_sd;
+    stdev = sqrt(((n1-1)*s[1]^2+(n2-1)*s[2]^2)/(n1+n2-2))
+    dd = delta.m / stdev;
   }else{
     #dd = (delta.m) / sd(d);
-    dd = (delta.m) / s[2]; ## Glass's Delta
+    stdev = sd[2]
+    dd = (delta.m) / stdev; ## Glass's Delta
   }
   df = n1+n2-2
   
@@ -90,7 +99,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     # Hedges, L. V. & Olkin, I. (1985). 
     # Statistical methods for meta-analysis. 
     # Orlando, FL: Academic Press.
-    dd = dd * (1 - 3 / ( 4 * (n1+n2) - 9))
+    if(paired){
+      J = 1 - 3/(4*(n1 - 1) - 1)
+    }else{
+      J = 1 - 3 / ( 4 * (n1+n2) - 9)
+    }
+    dd = dd * J
     res$method = "Hedges's g"
     res$name = "g"
   }else{
@@ -119,7 +133,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       t = delta.m/(sd(diff(d,lag=n1))/sqrt(n1))
       df=n1-1
     }else{
-      if(pooled) s = pool_sd
+      if(pooled) s = stdev
       else s = sd(d)
       
       t = delta.m / sqrt(s^2*(1/n1+1/n2))
@@ -184,6 +198,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   ## Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159. Crow, E. L. (1991).
   
   res$estimate = dd
+  res$sd = stdev
   res$conf.int = conf.int
 #  res$var = S_d
   res$conf.level = conf.level

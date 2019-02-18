@@ -3,6 +3,7 @@
 ^spikes
 ^paper
 ^reference
+^reverse
 ^vignettes_draft
 ^Performance
 ^README.md$
