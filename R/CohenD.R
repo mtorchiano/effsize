@@ -107,6 +107,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     dd = dd * J
     res$method = "Hedges's g"
     res$name = "g"
+    res$J = J
   }else{
     if(pooled){
       res$method = "Cohen's d"
@@ -171,19 +172,29 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
         ncp2*sqrt(1/n1+1/n2)
       ));
     }
+    S_d = NA;
   }else{
-    ## Probably the source is incorrect!!
-    ## The Handbook of Research Synthesis and Meta-Analysis 
-    ## (Cooper, Hedges, & Valentine, 2009)
-    ## p 238
-    #S_d = sqrt(((n1+n2)/(n1*n2) + .5*dd^2/df) * ((n1+n2)/df))
-    
-    # Robert J. Grissom and John J. Kim (2005)
-    # Effect size for researchers
-    # Lawrence Erlbaum Associates
-    # Equation 3.13 page 60
-    S_d = sqrt((n1+n2)/(n1*n2) + .5*dd^2/(n1+n2))
-    
+    if(paired){
+      #    Michael Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein
+      #    Introduction to Meta-Analysis.
+      # Formula 4.28
+      S_d = sqrt( (1/n1 + dd^2/(2*n1))*(2-2*r) );
+    }else{
+      ## Probably the source is incorrect!!
+      ## The Handbook of Research Synthesis and Meta-Analysis 
+      ## (Cooper, Hedges, & Valentine, 2009)
+      ## p 238
+      #S_d = sqrt(((n1+n2)/(n1*n2) + .5*dd^2/df) * ((n1+n2)/df))
+      
+      # Robert J. Grissom and John J. Kim (2005)
+      # Effect size for researchers
+      # Lawrence Erlbaum Associates
+      # Equation 3.13 page 60
+      S_d = sqrt((n1+n2)/(n1*n2) + .5*dd^2/(n1+n2));
+    }
+    if(hedges.correction){
+      S_d = S_d * J;
+    }
     Z = -qt((1-conf.level)/2,df)
     
     conf.int=c(
@@ -200,11 +211,11 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   res$estimate = dd
   res$sd = stdev
   res$conf.int = conf.int
-#  res$var = S_d
+  res$var = S_d^2
   res$conf.level = conf.level
   res$magnitude = factor(magnitude[findInterval(abs(dd),mag.levels)+1],levels = magnitude,ordered=T)
-#      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
-#      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
+  #      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
+  #      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
 
   class(res) <- "effsize"
   return(res)

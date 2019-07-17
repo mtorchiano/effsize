@@ -211,7 +211,21 @@ test_that("Two samples paired pooled with Hedges correction", {
     res.g = cohen.d(x1, x2, paired=TRUE, hedges.correction = TRUE)
   
     expect_equal(as.numeric(res.d$estimate),0.4225,tolerance = .0001)
+    expect_equal(as.numeric(res.d$var),0.0131,tolerance = .0001)
     expect_equal(as.numeric(res.g$estimate),0.4160,tolerance = .0001)
+    expect_equal(as.numeric(res.g$var),0.0127,tolerance = .0001)
 
 })
+
+# from issue #34
+test_that("Two samples paired normal cohen d", {
+ x1 = c(131,124,130,105,102,120,101,120)
+ x2 = c(133,134,129,112,106,125,106,129)
+  
+  res.d = cohen.d(x2, x1, paired=TRUE)
+
+  expect_equal(as.numeric(res.d$estimate),0.422,tolerance = .001)
+})
+
+
 
