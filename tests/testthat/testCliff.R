@@ -54,7 +54,7 @@ test_that("Non overlapping", {
   x1 = c(10, 20, 20, 20, 30, 30, 30, 40, 50, 100)
   x2 = c(10, 20, 30, 40, 40, 50) + 110
   
-  res<-cliff.delta(x1, x2)
+  expect_warning( res<-cliff.delta(x1, x2) , "disjoint" )
   expect_equal(as.character(res$magnitude),"large")
   
 })
@@ -66,7 +66,7 @@ test_that("Consistence between naive and partitioning", {
     n = round(runif(2,10,20))
     
     x1 = round(runif(n[1],1,20))
-    x2 = round(runif(n[2],15,30))
+    x2 = round(runif(n[2],5,30))
     
     res<-cliff.delta(x1, x2)
     res.dm<-cliff.delta(x1, x2,return.dm = TRUE)
@@ -92,6 +92,12 @@ test_that("Resonable CI for extrem cases", {
 test_that("double factor", {
   d <- data.frame(v = c("A","B","A","C","B","C","B","B","C","B"),
                   f = rep(c("G1","G2"),each=5))
-  cliff.delta(v ~ f, data=d)
-  cliff.delta(d$v , d$f)
+  resf = cliff.delta(v ~ f, data=d)
+  resv = cliff.delta(d$v , d$f)
+  
+  expect_true(! is.null(resf));
+  expect_true(! is.null(resv));
+  
+  expect_equal(resf$estimate,-0.44)
+  expect_equal(resv$estimate,-0.44)
 })

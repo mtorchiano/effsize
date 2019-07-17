@@ -163,7 +163,9 @@ test_that("confidence interval with non-central distribution for paired data",{
   # data from https://www.uvm.edu/%7Edhowell/methods7/Supplements/Confidence%20Intervals%20on%20Effect%20Size.pdf
   moon.data = c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56)
   g1 = rep(1,length(moon.data))
-  res = effsize::cohen.d(moon.data,g1,
+#  x2 = seq(1,1.9,by=0.1)
+#  x1 = moon.data+x2
+  res = cohen.d(moon.data,g1,
                    paired = TRUE,
                    noncentral = TRUE,
                    conf.level = 0.95

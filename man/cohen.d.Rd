@@ -83,7 +83,7 @@ The variance of the \code{d} is computed using the conversion formula reported a
 A list of class \code{effsize} containing the following components:
 \item{estimate}{the statistic estimate}
 \item{conf.int}{the confidence interval of the statistic}
-\item{sd}{the estimated std. deviation of the sample}
+\item{sd}{the within-groups standard deviation}
 \item{conf.level}{the confidence level used to compute the confidence interval}
 \item{magnitude}{a qualitative assessment of the magnitude of effect size}
 \item{method}{the method used for computing the effect size, either \code{"Cohen's d"} or \code{"Hedges' g"}}

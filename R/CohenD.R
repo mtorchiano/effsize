@@ -75,7 +75,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     # Formula 4.27
     s.dif = sd(diff(d,lag=n1))
     vals = split(d,f)
-    r = cor(vals[[1]],vals[[2]])
+    if(s[1]==0 || s[2]==0){
+      r=0;
+    }else{
+      r = cor(vals[[1]],vals[[2]])
+      if(is.na(r)) r = 0;
+    }
     stdev = s.dif / sqrt(2-2*r)
     
     dd = delta.m / stdev;

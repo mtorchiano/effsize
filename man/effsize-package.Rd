@@ -48,6 +48,7 @@ Fixed bug in \code{cohen.d} when using noncentral parameter for negative effect 
 \item{0.7.3}{Fixed bugs in \code{cohen.d}, possible endless loop, cleaned code}
 \item{0.7.4}{Fixed bugs in \code{cliff.delta} when values are factors}
 \item{0.7.5}{Fixed bugs in \code{cohen.d} for paired data}
+\item{0.7.6}{Fixed bugs in \code{cohen.d} for CI of paired data}
 }
 }
 \author{
