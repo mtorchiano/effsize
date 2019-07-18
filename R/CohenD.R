@@ -5,10 +5,73 @@
 
 cohen.d <- function(d,...) UseMethod("cohen.d")
 
-cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
+cohen.d_single <- function(x,mu=0,na.rm=FALSE,
+                           hedges.correction=FALSE,conf.level=0.95,
+                           noncentral=FALSE){
+  if(noncentral){
+    stop("Non-central CI not implemented for single sample.")
+  }
+  if(na.rm){
+    x <- x[!is.na(x)]
+  }
+  n = length(x)
+  s = sd(x)
+  df = length(x) - 1;
+  delta.m = mean(x) - mu;
+
+  dd <- delta.m / s;
+  
+  res = list();
+  if(hedges.correction){
+    J = 1 - 3 / ( 4 * (n) - 9)
+    dd = dd * J
+    res$method = "Hedges's g (single sample)"
+    res$name = "g"
+    res$J = J
+  }else{
+    res$method = "Cohen's d (single sample)"
+    res$name = "d"
+  }
+  
+  S_d <- sqrt((n / (n / 2)^2) + .5*(dd^2 / n))
+
+  if(hedges.correction){
+    S_d = S_d * J;
+  }
+  Z = -qt((1-conf.level)/2,df)
+  
+  conf.int=c(
+    dd - Z*S_d,
+    dd + Z*S_d
+  );
+
+  names(conf.int)=c("lower","upper")
+  
+  mag.levels = c(0.2,0.5,0.8)
+  magnitude = c("negligible","small","medium","large")
+  ## Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159. Crow, E. L. (1991).
+  
+  res$estimate = dd
+  res$mu = mu
+  res$sd = s
+  res$conf.int = conf.int
+  res$var = S_d^2
+  res$conf.level = conf.level
+  res$magnitude = factor(magnitude[findInterval(abs(dd),mag.levels)+1],levels = magnitude,ordered=T)
+  #      variance.estimation = if(use.unbiased){ "Unbiased"}else{"Consistent"},
+  #      CI.distribution = if(use.normal){ "Normal"}else{"Student-t"}
+  
+  class(res) <- "effsize"
+  return(res)
+}
+
+cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
                    hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, ...){
   if( ! any(c("numeric","integer") %in% class(d))){
     stop("First parameter must be a numeric type")
+  }
+  if(is.na(f)){ ## single sample
+    return( cohen.d_single(d,mu=mu,na.rm=na.rm,hedges.correction=hedges.correction,conf.level=conf.level) );
   }
   if( any(c("character","factor") %in% class(f)) ){
     ## it is data and factor
@@ -35,15 +98,6 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
                levels=c("Treatment","Control"),ordered=T)
   }
   
-  ns = as.numeric(table(f))
-  n1 = ns[1]
-  n2 = ns[2]
-  
-  if(paired & (n1!=n2)){
-    stop("Paired computation requires equal number of measures.");
-    return;
-  }
-  
   if(na.rm){
     nas = is.na(d) | is.na(f);
     if(paired){
@@ -54,12 +108,11 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     }
     d <- d[!nas];
     f <- f[!nas];
-
-    ns = table(f)
-    n1 = ns[1]
-    n2 = ns[2]
   }
-  
+
+  ns = as.numeric(table(f))
+  n1 = ns[1]
+  n2 = ns[2]
   
   m = c();
   s = c();
@@ -69,7 +122,13 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
   }
   
   delta.m = as.numeric(m[1] - m[2]);
-  if(paired){
+  
+  if( paired ){
+    if( n1 != n2 ){
+      stop("Paired computation requires equal number of measures.");
+      return;
+    }
+    
     #    Michael Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein
     #    Introduction to Meta-Analysis.
     # Formula 4.27
@@ -82,8 +141,6 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       if(is.na(r)) r = 0;
     }
     stdev = s.dif / sqrt(2-2*r)
-    
-    dd = delta.m / stdev;
   }else
   if(pooled){
     # Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
@@ -91,12 +148,12 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     #    involving paired comparisons. 
     # Journal of Educational Statistics, 18, 271-279.
     stdev = sqrt(((n1-1)*s[1]^2+(n2-1)*s[2]^2)/(n1+n2-2))
-    dd = delta.m / stdev;
   }else{
     #dd = (delta.m) / sd(d);
     stdev = sd[2]
-    dd = (delta.m) / stdev; ## Glass's Delta
   }
+
+  dd = delta.m / stdev;
   df = n1+n2-2
   
   res = list()
@@ -122,6 +179,8 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
       res$name = "Delta"
     }
   }
+  
+  ### ------------------ Confidence Interval --------------------------
   
   if(noncentral){
     # Based on the document:
@@ -227,17 +286,22 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
 }
 
 cohen.d.formula= function(formula, data=list(), ...){
-  mf <- model.frame(formula=formula, data=data)
-  if(dim(mf)[2]!=2){
-    stop("Formula must be a variable vs a factor")
+  if (length(formula) == 2 & length(all.vars(formula)) == 1) { # single sample 
+    x =  eval(formula[[2]], data)
+    res = cohen.d.default(x,NA,...)
+  }else{
+    mf <- model.frame(formula=formula, data=data)
+    if(dim(mf)[2]!=2){
+      stop("Formula must be a variable vs a factor")
+    }
+    d <- mf[[1]]
+    f <- mf[[2]]
+    if( ! any(c("character","factor") %in% class(f)) ){
+      warning("Cohercing rhs of formula to factor")
+      f = factor(f)
+    }  
+    res = cohen.d.default(d,f,...)
   }
-  d <- mf[[1]]
-  f <- mf[[2]]
-  if( ! any(c("character","factor") %in% class(f)) ){
-    warning("Cohercing rhs of formula to factor")
-    f = factor(f)
-  }  
-  res = cohen.d.default(d,f,...)
   return(res)
 }
 
