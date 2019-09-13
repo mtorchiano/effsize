@@ -29,7 +29,7 @@ a numeric vector giving either the data values (if \code{f} is a factor) or the 
 either a factor with two levels or a numeric vector of values
 }
   \item{pooled}{
-a logical indicating whether compute pooled standard deviation or the whole sample standard deviation. If \code{pooled=FALSE} (default) pooled sd is used, if \code{pooled=FALSE} the standard deviation of the the control group (the second argument or the one corresponding the the second level of the factor) is used instead.
+a logical indicating whether compute pooled standard deviation or the whole sample standard deviation. If \code{pooled=TRUE}{} (default) pooled sd is used, if \code{pooled=FALSE} the standard deviation of the the control group (the second argument or the one corresponding the the second level of the factor) is used instead.
 }
   \item{paired}{
 a logical indicating whether to consider the values as paired 
