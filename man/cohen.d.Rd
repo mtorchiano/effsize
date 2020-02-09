@@ -103,7 +103,7 @@ Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159.
 
 The Handbook of Research Synthesis and Meta-Analysis (Cooper, Hedges, & Valentine, 2009)
 
-David C. Howell (2010). Confidence Intervals on Effect Size. Available at: \url{https://www.uvm.edu/\%7Edhowell/methods7/Supplements/Confidence\%20Intervals\%20on\%20Effect\%20Size.pdf}
+David C. Howell (2011). Confidence Intervals on Effect Size. Available at: \url{https://www.uvm.edu/~statdhtx/methods8/Supplements/MISC/Confidence\%20Intervals\%20on\%20Effect\%20Size.pdf}
 
 Cumming, G.; Finch, S. (2001). A primer on the understanding, use, and calculation of confidence intervals that are based on central and noncentral distributions. Educational and Psychological Measurement, 61, 633-649.
 
