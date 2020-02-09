@@ -318,7 +318,7 @@ cohen.d.formula= function(formula, data=list(), ...){
 # eff.g = cohen.d(d,f,hedges.correction=TRUE)
 # print(eff.g)
 # set.seed(12345)
-# d <- rnorm(200)
+# d <- rnorm(800)
 # f <- rep(c(1,2),400)
 # cohen.d(d ~ factor(f))
 
