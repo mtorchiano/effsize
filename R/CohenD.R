@@ -94,7 +94,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     dd = delta.m / stdev;
   }else{
     #dd = (delta.m) / sd(d);
-    stdev = sd[2]
+    stdev = s[2]
     dd = (delta.m) / stdev; ## Glass's Delta
   }
   df = n1+n2-2
