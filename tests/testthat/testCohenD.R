@@ -230,4 +230,28 @@ test_that("Two samples paired normal cohen d", {
 })
 
 
+test_that("Single sample with null mu",{
+  moon.data = c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56)
+  
+  res.d = cohen.d( ~ moon.data,data=data.frame(moon.data=moon.data))
+  
+  expect_equal(as.numeric(res.d$estimate),4.294,tolerance = .001)
+})
+
+test_that("Single sample with non-null mu",{
+  moon.data <- c(1.73, 1.06, 2.03, 1.40, 0.95, 1.13, 1.41, 1.73, 1.63, 1.56)
+  
+  res.d = cohen.d( ~ moon.data, mu=1,data=data.frame(moon.data=moon.data))
+
+  expect_equal(as.numeric(res.d$estimate),1.359,tolerance = .001)
+})
+
+test_that("Cohen pooled false",{
+  Before = c(45L, 52L, 63L, 68L, 57L, 55L, 60L, 59L)
+  After = c(49L, 50L, 70L, 71L, 53L, 61L, 62L, 67L)
+  
+  res.d = cohen.d(After, Before, pooled=FALSE)
+  
+  expect_equal(as.numeric(res.d$estimate),0.429,tolerance = .001)
+})
 
