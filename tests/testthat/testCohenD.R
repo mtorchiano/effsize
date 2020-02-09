@@ -255,3 +255,12 @@ test_that("Cohen pooled false",{
   expect_equal(as.numeric(res.d$estimate),0.429,tolerance = .001)
 })
 
+test_that("Cohen numeric first arg with own class",{
+  d = c (2,3,4,5,6,7)
+  f = factor(rep(c("a","b"),each=3))
+  
+  class(d) <- "Cheese"
+  res.d = cohen.d(d, f)
+  
+  expect_equal(as.numeric(res.d$estimate),-3,tolerance = .1)
+})

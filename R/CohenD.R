@@ -67,7 +67,10 @@ cohen.d_single <- function(x,mu=0,na.rm=FALSE,
 
 cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
                    hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, ...){
-  if( ! any(c("numeric","integer") %in% class(d))){
+  if( is.factor(d) ){
+    stop("First parameter is a factor: consider using a different effect size, e.g., cliff.delta")
+  }
+  if( ! is.numeric(d) ){
     stop("First parameter must be a numeric type")
   }
   if(length(f) == 1 && is.na(f)){ ## single sample
