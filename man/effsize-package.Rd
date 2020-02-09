@@ -50,6 +50,8 @@ Fixed bug in \code{cohen.d} when using noncentral parameter for negative effect 
 \item{0.7.5}{Fixed bugs in \code{cohen.d} for paired data}
 \item{0.7.6}{Fixed bugs in \code{cohen.d} for CI of paired data}
 \item{0.7.7}{Fixed bugs in \code{cohen.d} for non-pooled SD, plus a few pull requests on documentation}
+\item{0.7.8}{Fixed bug in \code{cohen.d} wrong correct type check }
+
 }
 }
 \author{
