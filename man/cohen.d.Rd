@@ -16,7 +16,7 @@ cohen.d(d, ...)
 \method{cohen.d}{formula}(formula,data=list(),...)
 
 \method{cohen.d}{default}(d,f,pooled=TRUE,paired=FALSE,
-                   na.rm=FALSE, hedges.correction=FALSE,
+                   na.rm=FALSE, mu=0, hedges.correction=FALSE,
                    conf.level=0.95,noncentral=FALSE, ...)
 
 }
@@ -37,6 +37,9 @@ a logical indicating whether to consider the values as paired
   \item{na.rm}{
 logical indicating whether \code{NA}s should be removed before computation;
 if \code{paired==TRUE} then all incomplete pairs are removed.
+}
+  \item{mu}{
+numeric indicating there reference mean for single sample effect size.
 }
   \item{hedges.correction}{
 logical indicating whether apply the Hedges correction

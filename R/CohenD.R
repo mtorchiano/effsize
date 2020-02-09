@@ -70,7 +70,7 @@ cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
   if( ! any(c("numeric","integer") %in% class(d))){
     stop("First parameter must be a numeric type")
   }
-  if(is.na(f)){ ## single sample
+  if(length(f) == 1 && is.na(f)){ ## single sample
     return( cohen.d_single(d,mu=mu,na.rm=na.rm,hedges.correction=hedges.correction,conf.level=conf.level) );
   }
   if( any(c("character","factor") %in% class(f)) ){
@@ -150,7 +150,7 @@ cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
     stdev = sqrt(((n1-1)*s[1]^2+(n2-1)*s[2]^2)/(n1+n2-2))
   }else{
     #dd = (delta.m) / sd(d);
-    stdev = sd[2]
+    stdev = s[2]
   }
 
   dd = delta.m / stdev;

@@ -246,3 +246,12 @@ test_that("Single sample with non-null mu",{
   expect_equal(as.numeric(res.d$estimate),1.359,tolerance = .001)
 })
 
+test_that("Cohen pooled false",{
+  Before = c(45L, 52L, 63L, 68L, 57L, 55L, 60L, 59L)
+  After = c(49L, 50L, 70L, 71L, 53L, 61L, 62L, 67L)
+  
+  res.d = cohen.d(After, Before, pooled=FALSE)
+  
+  expect_equal(as.numeric(res.d$estimate),0.429,tolerance = .001)
+})
+
