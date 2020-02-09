@@ -20,7 +20,7 @@ cohen.d.default = function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,
     }  
     if(length(levels(f))!=2){
       if(length(unique(f))==2){
-        warning("Factor with multiple levles, using only the two actually present in data");
+        warning("Factor with multiple levels, using only the two actually present in data");
       }else{
         stop("Factor should have only two levels");
         return;
