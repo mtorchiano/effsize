@@ -91,7 +91,7 @@ test_that("Resonable CI for extrem cases", {
 
 test_that("double factor", {
   d <- data.frame(v = c("A","B","A","C","B","C","B","B","C","B"),
-                  f = rep(c("G1","G2"),each=5))
+                  f = rep(c("G1","G2"),each=5), stringsAsFactors = TRUE)
   resf = cliff.delta(v ~ f, data=d)
   resv = cliff.delta(d$v , d$f)
   
