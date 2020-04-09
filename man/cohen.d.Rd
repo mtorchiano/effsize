@@ -26,11 +26,31 @@ cohen.d(d, ...)
 a numeric vector giving either the data values (if \code{f} is a factor) or the treatment group values (if \code{f} is a numeric vector)
 }
   \item{f}{
-either a factor with two levels or a numeric vector of values
+either a factor with two levels or a numeric vector of values, if \code{NA} a single sample effect size is computed
 }
+  \item{formula}{
+    a formula of the form \code{y ~ f}, where \code{y} is a numeric variable giving the values and \code{f} a factor with two levels giving the corresponding groups.
+    
+    If using a paired computation (\code{paired=TRUE}) it is possible to specify the ids of the subjects using the form \code{y ~ f | Subject(id)} which allow the correct pairing of the pre and post values.
+    
+    A single sample effect size can be specified with the form \code{y ~ .}.
+  }
+  \item{data}{
+  an optional matrix or data frame containing the variables in the formula \code{formula}. By default the variables are taken from \code{environment(formula)}.
+  }
   \item{pooled}{
 a logical indicating whether compute pooled standard deviation or the whole sample standard deviation. If \code{pooled=TRUE} (default) pooled sd is used, if \code{pooled=FALSE} the standard deviation of the the control group (the second argument or the one corresponding the the second level of the factor) is used instead.
 }
+  \item{hedges.correction}{
+logical indicating whether apply the Hedges correction
+}
+  \item{conf.level}{
+confidence level of the confidence interval
+}
+  \item{noncentral}{
+  logical indicating whether to use non-central t distributions for
+  computing the confidence interval.}
+
   \item{paired}{
 a logical indicating whether to consider the values as paired, a warning is issued if 
 \code{paired==TRUE} with the formula interface and not \code{| Subject(id)} or with data and factor and no \code{subject} is provided
@@ -39,28 +59,13 @@ a logical indicating whether to consider the values as paired, a warning is issu
 an array indicating the id of the subject for a paired computation, when the formula interface is used it can be indicated in the formula by adding \code{| Subject(id)}, where \code{id} is the column in the data that contains and id of the subjects to be paired.
 }
 
+  \item{mu}{
+numeric indicating the reference mean for single sample effect size.
+}
   \item{na.rm}{
 logical indicating whether \code{NA}s should be removed before computation;
 if \code{paired==TRUE} then all incomplete pairs are removed.
 }
-  \item{mu}{
-numeric indicating there reference mean for single sample effect size.
-}
-  \item{hedges.correction}{
-logical indicating whether apply the Hedges correction
-}
-  \item{conf.level}{
-confidence level of the confidence interval
-}
-  \item{formula}{
-    a formula of the form \code{y ~ f}, where \code{y} is a numeric variable giving the data values and \code{f} a factor with two levels giving the corresponding groups
-  }
-  \item{data}{
-  an optional matrix or data frame containing the variables in the formula \code{formula}. By default the variables are taken from \code{environment(formula)}.
-  }
-  \item{noncentral}{
-  logical indicating whether to use non-central t distributions for
-  computing the confidence interval.}
   \item{...}{
   further arguments to be passed to or from methods.
   }
@@ -68,12 +73,13 @@ confidence level of the confidence interval
 \details{
 When \code{f} in the default version is a factor or a character, it must have two values and it identifies the two groups to be compared. Otherwise (e.g. \code{f} is numeric), it is considered as a sample to be compare to \code{d}.
 
-In the formula version, if \code{f} is expected to be a factor, if that is not the case it is coherced to a factor and a warning is issued.
+In the formula version, \code{f} is expected to be a factor, if that is not the case it is coherced to a factor and a warning is issued.
 
 The function computes the value of Cohen's d statistics (Cohen 1988).
 If required (\code{hedges.correction==TRUE}) the Hedges g statistics is computed instead (Hedges and Holkin, 1985).
 
-When \code{paired} is set, the effect size is computed using the approach suggested in (Gibbons et al. 1993).
+When \code{paired} is set, the effect size is computed using the approach suggested in (Gibbons et al. 1993). In particular a correction to take into consideration the correlation of the two samples is applied (see Borenstein et al., 2009)
+
 
 It is possible to perform a single sample effect size estimation either using a formula \code{~x} or passing \code{f=NA}. 
 
@@ -106,7 +112,8 @@ Hedges, L. V. & Olkin, I. (1985). Statistical methods for meta-analysis. Orlando
 
 Cohen, J. (1992). A power primer. Psychological Bulletin, 112, 155-159.
 
-The Handbook of Research Synthesis and Meta-Analysis (Cooper, Hedges, & Valentine, 2009)
+Cooper, Hedges, and Valentin (2009).
+The Handbook of Research Synthesis and Meta-Analysis
 
 David C. Howell (2011). Confidence Intervals on Effect Size. Available at: \url{https://www.uvm.edu/~statdhtx/methods8/Supplements/MISC/Confidence\%20Intervals\%20on\%20Effect\%20Size.pdf}
 
@@ -116,6 +123,9 @@ Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993).
 Estimation of effect size from a series of experiments involving paired comparisons. 
 Journal of Educational Statistics, 18, 271-279.
 
+M. Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein (2009)
+Introduction to Meta-Analysis.
+John Wiley & Son.
 }
 \author{
 Marco Torchiano \url{http://softeng.polito.it/torchiano/}
