@@ -95,6 +95,8 @@ cliff.delta.default <- function( d, f, conf.level=.95,
 
   if(conf.level>.9999 | conf.level<.5) stop("conf.level must be within 50% and 99.99%")
   
+  treatment = sort(treatment)
+  control = sort(control)
   n1 = length(treatment)
   n2 = length(control)
   
@@ -121,9 +123,6 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     SSR = t((dm_L-d.)^2 %*% (fc*n2)) %*% ft *n1 
   }else{ 
     ## not a factor
-    treatment = sort(treatment)
-    control = sort(control)
-    
     if(return.dm){ ## explicitly compute dominance matrix
       algorithm="Naive"
       dominance = sign(outer(treatment, control, FUN="-")) 
