@@ -111,3 +111,11 @@ test_that("presence of NAs", { # Issue #50
               mtcars$mpg[which(mtcars$vs==1)])
   expect_equal(cd$estimate,-0.89,0.01)
 })
+
+test_that("At least 2 levels", { # Issue #46
+  expect_error(cliff.delta( 1, factor("a",c("a","b")) ),"exactly two")
+})
+
+test_that("At least 3 data points", {
+  expect_error(cliff.delta( 1:2, as.character(1:2) ))
+})

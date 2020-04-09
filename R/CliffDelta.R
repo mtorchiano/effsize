@@ -75,14 +75,14 @@ cliff.delta.default <- function( d, f, conf.level=.95,
     if( "character" %in% class(f)){
       f = factor(f)
     }  
-    if(length(levels(f))!=2){
       if(length(unique(f))==2){
-        warning("Factor with multiple levles, using only those effectively present in data");
+        if(length(levels(f))!=2){
+        warning("Factor with multiple levels, using only those effectively present in data");
+        }
       }else{
-        stop("Factor should have only two levels");
+        stop("Factor should have exactly two effective levels");
         return;
       }
-    }
     tc = split(d,f)
     treatment = tc[[1]]
     control = tc[[2]]
@@ -99,6 +99,10 @@ cliff.delta.default <- function( d, f, conf.level=.95,
   control = sort(control)
   n1 = length(treatment)
   n2 = length(control)
+  
+  if(n1+n2<3){
+    stop("Cannot compute Cliff delta value with less than 3 values")
+  }
   
   rescale.factor = (n1*n2-1)/(n1*n2);
 
