@@ -102,7 +102,7 @@ test_that("double factor", {
   expect_equal(resv$estimate,-0.44)
 })
 
-test_that("presence of NAs", {
+test_that("presence of NAs", { # Issue #50
   mtcars = mtcars
   set.seed(12345)
   vals = sample(1:length(mtcars$mpg), 10, replace=FALSE)
