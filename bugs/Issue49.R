@@ -18,6 +18,9 @@ lsr::cohensD(value ~ treatment,data = df,method = "paired")
 effsize::cohen.d(value ~ treatment, data=df, paired=T,hedges.correction=F)$estimate
 #1.32
 
+effsize::cohen.d(value ~ treatment | Subject(id), data=df, paired=T)
+
+effsize::cohen.d(value ~ treatment | Subject(id), data=df, paired=T, within=FALSE)
 
 #### PROBLEM SOLUTION
 

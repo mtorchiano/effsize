@@ -76,7 +76,8 @@ cohen.d_single <- function(x,mu=0,na.rm=FALSE,
 }
 
 cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
-                   hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, subject=NA, ...){
+                   hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, 
+                   within=TRUE, subject=NA, ...){
   if( is.factor(d) ){
     stop("First parameter is a factor: consider using a different effect size, e.g., cliff.delta")
   }
@@ -158,18 +159,23 @@ cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
       return;
     }
     
-    #    Michael Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein
-    #    Introduction to Meta-Analysis.
-    # Formula 4.27
     s.dif = sd(diff(d,lag=n1))
-    vals = split(d,f)
-    if(s[1]==0 || s[2]==0){
-      r=0;
+    if(within){
+      vals = split(d,f)
+      if(s[1]==0 || s[2]==0){
+        r=0;
+      }else{
+        r = cor(vals[[1]],vals[[2]])
+        if(is.na(r)) r = 0;
+      }
+      stdev = s.dif / sqrt(2-2*r)
+      #    Michael Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein
+      #    Introduction to Meta-Analysis.
+      # Formula 4.27
     }else{
-      r = cor(vals[[1]],vals[[2]])
-      if(is.na(r)) r = 0;
+      r = 0.5
+      stdev = s.dif
     }
-    stdev = s.dif / sqrt(2-2*r)
   }else
   if(pooled){
     # Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). 
