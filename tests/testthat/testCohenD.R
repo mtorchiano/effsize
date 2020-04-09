@@ -264,3 +264,63 @@ test_that("Cohen numeric first arg with own class",{
   
   expect_equal(as.numeric(res.d$estimate),-3,tolerance = .1)
 })
+
+test_that("Same results independent on data's sorting order",{
+  ## From Issue #48
+  #Setup some dummy data
+  set.seed(1234)
+  numSubjects <- 20
+  subject <- 1:numSubjects
+  before <- runif(numSubjects)
+  after <- before - 0.35*runif(length(before))
+  df <- data.frame(
+    subject=rep(subject,2),
+    group=c(
+      rep("before",numSubjects),
+      rep("after",numSubjects)
+    ),
+    value=c(before, after)
+  )
+  
+  ##################################
+  
+  valueBefore <- df[df$group == "before",]$value
+  valueAfter <- df[df$group == "after",]$value
+  
+  # d1 == d2
+  d1 <- effsize::cohen.d(valueAfter, valueBefore, paired=T)
+  d2 <- expect_warning(effsize::cohen.d(value~group, data=df, paired=T))
+  expect_equal(as.numeric(d1$estimate),as.numeric(d2$estimate),tolerance = .001)
+  
+  ##################################
+  
+  # Sorted by subjectId
+  df <- df[order(df$subject),]
+  valueBefore <- df[df$group == "before",]$value
+  valueAfter <- df[df$group == "after",]$value
+  
+  d3 <- effsize::cohen.d(valueAfter, valueBefore, paired=T)
+  d4 <- expect_warning(effsize::cohen.d(value~group, data=df, paired=T))
+  expect_equal(as.numeric(d3$estimate),as.numeric(d4$estimate),tolerance = .001)
+  
+  ##################################
+  
+  # Sorted by group
+  df <- df[order(df$group),]
+  valueBefore <- df[df$group == "before",]$value
+  valueAfter <- df[df$group == "after",]$value
+  
+  d5 <- effsize::cohen.d(valueAfter, valueBefore, paired=T)
+  
+
+  d6 <- expect_warning(effsize::cohen.d(value~group, data=df, paired=T))
+  expect_equal(as.numeric(d5$estimate),as.numeric(d6$estimate),tolerance = .001)
+  
+  
+  ##################################
+  
+  d7 <- expect_silent(effsize::cohen.d(value~group | Subject(subject), data=df, paired=T))
+  expect_equal(as.numeric(d6$estimate),as.numeric(d7$estimate),tolerance = .001)
+  
+  expect_error(effsize::cohen.d(value~group | Subject(subject), data=df[c(-1),], paired=T))
+})

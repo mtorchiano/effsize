@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^spikes
+^bugs
 ^paper
 ^reference
 ^reverse

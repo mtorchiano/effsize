@@ -76,7 +76,7 @@ cohen.d_single <- function(x,mu=0,na.rm=FALSE,
 }
 
 cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
-                   hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, ...){
+                   hedges.correction=FALSE,conf.level=0.95,noncentral=FALSE, subject=NA, ...){
   if( is.factor(d) ){
     stop("First parameter is a factor: consider using a different effect size, e.g., cliff.delta")
   }
@@ -102,8 +102,24 @@ cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
         return;
       }
     }
+    if(all(!is.na(subject))){
+      ord = order(subject)
+      d <- d[ord];
+      f <- f[ord];
+      subject <- subject[ord];
+      subjects = split(subject,f);
+      if(length(subjects[[1]]) != length(subjects[[2]])
+         || any(subjects[[1]]!=subjects[[2]])){
+        stop("The subjects in the two groups of a paired effect size must be the same.")
+      }
+    }
+    d <- d[order(f)];
+    f <- f[order(f)];
   }else{
     ## it is treatment and control
+    if(!is.na(subject)){
+      warning("subject is not used if treatment and control are provided");
+    }
     treatment = d
     control = f
     d = c(treatment,control)
@@ -302,10 +318,35 @@ cohen.d.default <- function(d,f,pooled=TRUE,paired=FALSE,na.rm=FALSE,mu=0,
 }
 
 cohen.d.formula= function(formula, data=list(), ...){
-  if (length(formula) == 2 & length(all.vars(formula)) == 1) { # single sample 
+  if (length(all.vars(formula))==1 || is.numeric(formula[[3]]) || formula[[3]]=="." ) { # single sample 
     x =  eval(formula[[2]], data)
     res = cohen.d.default(x,NA,...)
   }else{
+    subject = NA
+    paired=list(...)$paired
+    if(!is.null(paired) && paired ){
+      ## Check if using formula structure as 'value ~ treatment | Subject(id)'
+      # ~
+      # ...
+      # call |
+      #      ...
+      #      call Subject
+      #           id
+      if(is.call(formula[[3]]) && formula[[3]][[1]]=="|" &&
+         is.call(formula[[3]][[3]]) && formula[[3]][[3]][[1]] == "Subject"
+      ) {
+        id = formula[[3]][[3]][[2]]
+        subject = eval(id,data)
+
+        ## remove Subject from formula
+        formula[[3]] = formula[[3]][[2]]
+      }else{
+        warning(paste("Trying to compute paired samples Cohen's d using formula input.",
+                      "Results may be incorrect if cases do not appear in the same order for both levels of the grouping factor.",
+                      "Use the format 'value ~ treatment | Subject(id)' to specify a subject id variable."))
+      }
+    }
+    
     mf <- model.frame(formula=formula, data=data)
     if(dim(mf)[2]!=2){
       stop("Formula must be a variable vs a factor")
@@ -315,8 +356,8 @@ cohen.d.formula= function(formula, data=list(), ...){
     if( ! any(c("character","factor") %in% class(f)) ){
       warning("Cohercing rhs of formula to factor")
       f = factor(f)
-    }  
-    res = cohen.d.default(d,f,...)
+    }
+    res = cohen.d.default(d,f,subject=subject,...)
   }
   return(res)
 }

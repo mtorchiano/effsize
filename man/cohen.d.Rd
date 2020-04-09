@@ -17,7 +17,7 @@ cohen.d(d, ...)
 
 \method{cohen.d}{default}(d,f,pooled=TRUE,paired=FALSE,
                    na.rm=FALSE, mu=0, hedges.correction=FALSE,
-                   conf.level=0.95,noncentral=FALSE, ...)
+                   conf.level=0.95,noncentral=FALSE, subject=NA, ...)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -32,8 +32,13 @@ either a factor with two levels or a numeric vector of values
 a logical indicating whether compute pooled standard deviation or the whole sample standard deviation. If \code{pooled=TRUE} (default) pooled sd is used, if \code{pooled=FALSE} the standard deviation of the the control group (the second argument or the one corresponding the the second level of the factor) is used instead.
 }
   \item{paired}{
-a logical indicating whether to consider the values as paired 
+a logical indicating whether to consider the values as paired, a warning is issued if 
+\code{paired==TRUE} with the formula interface and not \code{| Subject(id)} or with data and factor and no \code{subject} is provided
 }
+  \item{subject}{
+an array indicating the id of the subject for a paired computation, when the formula interface is used it can be indicated in the formula by adding \code{| Subject(id)}, where \code{id} is the column in the data that contains and id of the subjects to be paired.
+}
+
   \item{na.rm}{
 logical indicating whether \code{NA}s should be removed before computation;
 if \code{paired==TRUE} then all incomplete pairs are removed.
