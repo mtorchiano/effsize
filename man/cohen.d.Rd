@@ -91,7 +91,7 @@ It is possible to perform a single sample effect size estimation either using a 
 
 The computation of the CI requires the use of non-central Student-t distributions that are used when \code{noncentral==TRUE}; otherwise a central distribution is used.
 
-Also a quantification of the effect size magnitude is performed using the thresholds define in Cohen (1992).
+Also a quantification of the effect size magnitude is performed using the thresholds defined in Cohen (1992).
 The magnitude is assessed using the thresholds provided in (Cohen 1992), i.e. |d|<0.2 \code{"negligible"}, |d|<0.5 \code{"small"}, |d|<0.8 \code{"medium"}, otherwise \code{"large"}
 
 The variance of the \code{d} is computed using the conversion formula reported at page 238 of Cooper et al. (2009):
